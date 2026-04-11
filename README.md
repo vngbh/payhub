@@ -193,7 +193,7 @@ Suggested commit flow:
 ```sh
 git status
 git add .
-git commit -m "feat/add-expense-form"
+git commit -m "feat: add expense form"
 ```
 
 ## Architecture Direction
