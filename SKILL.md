@@ -138,6 +138,17 @@ Structure change rule:
 - If a task only edits implementation inside the existing structure, no structure update is required unless the change reveals that the current convention is misleading.
 - When proposing a structure update, include it in the same PR as the structural change unless the user asks to split documentation separately.
 
+## Continuous Learning Rule
+
+Capture useful lessons directly in the appropriate skill file:
+
+- If a task reveals a better workflow, convention, project rule, recurring mistake, or useful reminder, propose updating the relevant `SKILL.md`.
+- Use the root `SKILL.md` for repository-wide lessons that affect Git workflow, PRs, language, structure, validation, or cross-folder behavior.
+- Use a local `SKILL.md` for lessons that only affect one area, such as the app target, unit tests, UI tests, component docs, or translation docs.
+- If a lesson affects both a local area and the wider repository, update both the local `SKILL.md` and the root `SKILL.md`.
+- Include skill updates in the same PR as the work that taught the lesson unless the user asks to split documentation separately.
+- Keep skill updates concise, actionable, and written as rules future agents can follow.
+
 Guidelines:
 
 - Update the `Project Structure` section whenever files or folders are added, removed, renamed, or meaningfully reorganized.
