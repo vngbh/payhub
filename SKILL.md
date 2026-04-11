@@ -35,13 +35,26 @@ divpay/
 │       └── TRANSLATE.md
 ├── divpay.xcodeproj/
 ├── divpay/
+│   ├── App/
+│   │   └── divpayApp.swift
 │   ├── Assets.xcassets/
-│   ├── ContentView.swift
+│   ├── Models/
+│   │   ├── Expense.swift
+│   │   ├── Member.swift
+│   │   └── Settlement.swift
+│   ├── Services/
+│   │   ├── CurrencyFormatterService.swift
+│   │   └── SplitCalculator.swift
 │   ├── SKILL.md
-│   └── divpayApp.swift
+│   ├── ViewModels/
+│   │   └── GroupSplitViewModel.swift
+│   └── Views/
+│       └── Groups/
+│           └── ContentView.swift
 ├── divpayTests/
-│   ├── SKILL.md
-│   └── divpayTests.swift
+│   ├── Services/
+│   │   └── SplitCalculatorTests.swift
+│   └── SKILL.md
 └── divpayUITests/
     ├── SKILL.md
     ├── divpayUITests.swift
