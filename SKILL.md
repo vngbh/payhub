@@ -7,6 +7,16 @@ description: Use this skill when working on the Divpay iOS project to follow pro
 
 Use this file as the working agreement for every task in this repository. Before changing code, read the current project structure and keep this file updated when the structure changes.
 
+## Language Convention
+
+Use English across the entire project:
+
+- Write documentation, `SKILL.md` files, comments, commit messages, branch names, PR titles, and PR descriptions in English.
+- Write code identifiers, file names, folders, test names, fixtures, and accessibility identifiers in English.
+- Use English as the default user-facing product copy unless a task is explicitly about localization.
+- Put translations in localization resources or files under `docs/translate`; do not mix languages inside source files or general project documentation.
+- If a task finds Vietnamese or any other non-English project text outside an explicit localization context, propose converting it to English in the same PR.
+
 ## Project Structure
 
 Current structure:

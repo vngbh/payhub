@@ -4,7 +4,9 @@ Use this document when writing or translating user-facing copy for Divpay.
 
 ## Supported Languages
 
-Initial product language can be Vietnamese-first. English copy should remain available for future App Store, TestFlight, and broader user testing needs.
+English is the default language for the product, documentation, source comments, commit messages, branch names, PR titles, and PR descriptions.
+
+Additional languages can be added later through explicit localization resources. Do not mix languages inside source files or general project documentation.
 
 ## Voice
 
@@ -33,4 +35,3 @@ Initial product language can be Vietnamese-first. English copy should remain ava
 - User-facing strings should move toward string catalogs or a localization resource as the app grows.
 - Test identifiers must not depend on translated text.
 - Do not use user-facing copy as the only UI test selector when an accessibility identifier is more stable.
-
