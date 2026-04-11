@@ -1,6 +1,6 @@
 # Component Instructions
 
-Use this document when building or reviewing reusable UI components for Divpay.
+Use this document when building or reviewing reusable UI components for payhub.
 
 ## Component Standard
 
@@ -30,8 +30,8 @@ Use `@Binding` only when the component truly edits parent state. Use callbacks f
 
 ## Placement
 
-- Feature-specific components live near their feature folder, for example `divpay/Views/Expenses/`.
-- Shared components live in `divpay/Views/Shared/`.
+- Feature-specific components live near their feature folder, for example `payhub/Views/Expenses/`.
+- Shared components live in `payhub/Views/Shared/`.
 - Do not move a component into `Shared` until at least two features need it or reuse is clearly imminent.
 
 ## Accessibility
