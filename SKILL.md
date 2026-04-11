@@ -268,6 +268,8 @@ docs/short-doc-name
 refactor/short-refactor-name
 test/short-test-name
 chore/short-maintenance-name
+ci/short-ci-name
+build/short-build-name
 ```
 
 Examples:
@@ -279,6 +281,8 @@ docs/update-launch-process
 refactor/extract-split-service
 test/add-split-calculator-tests
 chore/update-xcode-settings
+ci/add-pr-checks
+build/add-inject-package
 ```
 
 Before starting a task:
@@ -344,6 +348,14 @@ merge base PR -> retarget dependent PR to main -> merge dependent PR
 Commit messages must follow:
 
 ```text
+type(scope): message
+```
+
+The `scope` is optional but preferred when it makes the affected area clear.
+
+Use this shorter form when no clear scope is needed:
+
+```text
 type: message
 ```
 
@@ -356,17 +368,25 @@ Allowed types:
 - `refactor`: code restructuring without changing behavior.
 - `test`: adding or updating tests.
 - `chore`: maintenance, project settings, dependency or tooling changes.
+- `ci`: continuous integration workflows and checks.
+- `build`: build system, Xcode project settings, dependency, packaging, or release build changes.
+- `perf`: performance improvement without changing behavior.
+- `revert`: revert a previous commit.
 
 Examples:
 
 ```text
-feat: add expense form
-fix: settle rounding error
-docs: add development process
-style: polish summary screen
-refactor: extract split calculator
-test: add even split tests
-chore: configure ci
+feat(expenses): add participant picker
+fix(split): handle rounding remainder
+docs(skill): add routing convention
+style(summary): polish balance color
+refactor(groups): extract split screen sections
+test(split): add even split coverage
+chore(git): update ignore rules
+ci(actions): add pr checks
+build(xcode): add inject package
+perf(split): reduce settlement passes
+revert: revert hot reload package
 ```
 
 Keep commits focused. If one task changes unrelated areas, split it into separate commits or separate branches.
