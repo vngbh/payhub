@@ -136,6 +136,32 @@ Local skill files:
 - `payhubTests/SKILL.md`: unit test conventions for domain logic and service behavior.
 - `payhubUITests/SKILL.md`: UI test conventions for launch, user flows, accessibility identifiers, and screenshots.
 
+## Skill Routing
+
+Use the smallest relevant skill context for each task:
+
+- Always start with the root `SKILL.md` for repository-wide rules.
+- Then read only the local `SKILL.md` files for folders touched by the task.
+- Treat local skill files as the source of truth for their area; do not rely on the root skill for area-specific details.
+- If a change affects multiple areas, read each affected local skill before editing that area.
+- If a task changes an area's structure, workflow, or recurring convention, update that area's local `SKILL.md` in the same PR.
+- If a local change also affects repository-wide workflow, structure, language, validation, or Git behavior, update the root `SKILL.md` too.
+- Keep the root `SKILL.md` focused on routing and cross-repository rules so future tasks spend less context on irrelevant details.
+- Do not duplicate detailed local rules in the root skill unless they apply across the whole repository.
+
+Routing map:
+
+```text
+docs/**                  -> docs/SKILL.md
+docs/components/**       -> docs/components/SKILL.md
+docs/translate/**        -> docs/translate/SKILL.md
+payhub/**                -> payhub/SKILL.md
+payhubTests/**           -> payhubTests/SKILL.md
+payhubUITests/**         -> payhubUITests/SKILL.md
+README.md                -> root SKILL.md, then docs/SKILL.md when development documentation changes
+payhub.xcodeproj/**      -> root SKILL.md, then payhub/SKILL.md when app target behavior changes
+```
+
 Folder responsibilities:
 
 - `App`: app entry point, app-level dependency setup, root scene wiring.
