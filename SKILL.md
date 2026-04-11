@@ -188,7 +188,17 @@ Keep paths simple and stable:
 
 ## Git Workflow
 
-Every task must be done on its own branch and completed through a pull request.
+Every task must be done on its own branch and completed through a pull request. Never push task changes directly to `main`.
+
+Rules:
+
+- `main` is protected and must only receive changes through merged pull requests.
+- Do not commit task work directly on `main`.
+- Do not push directly to `main` unless the user explicitly asks for an emergency repository repair.
+- Start each task from the latest `main`.
+- Open a PR for every task, even documentation-only work.
+- Merge PRs before starting dependent work when possible.
+- Delete local and remote task branches after their PRs are merged.
 
 Branch naming:
 
@@ -222,6 +232,53 @@ git switch -c feature/short-task-name
 ```
 
 If there is no remote yet, skip `git pull --ff-only` until `origin` is configured.
+
+## Multi-PR Workflow
+
+When several branches or PRs are created in one work session, keep the flow simple and predictable.
+
+Prefer independent PRs into `main`:
+
+- Split work into independent branches only when each branch can be reviewed and merged on its own.
+- Base each independent branch on the latest `main`.
+- Open each independent PR against `main`.
+- Merge independent PRs one at a time after review.
+
+Use stacked PRs only when a later task truly depends on an earlier unmerged task:
+
+- Make the dependency explicit in the PR body.
+- Base the dependent PR on the branch it depends on.
+- Merge from the bottom of the stack upward: base PR first, dependent PR after.
+- After a base PR merges into `main`, immediately rebase or retarget dependent PRs onto the latest `main`.
+- Do not merge a dependent PR into an already-merged feature branch. Retarget it to `main` instead.
+- Do not delete a base branch until dependent PRs are retargeted or merged.
+- If branch history becomes confusing, pause and clean it before continuing.
+
+Recommended order for one session:
+
+1. Create branch from latest `main`.
+2. Implement one task.
+3. Commit using the commit convention.
+4. Push the branch.
+5. Open a PR.
+6. Merge the PR before starting dependent work when practical.
+7. Pull latest `main`.
+8. Delete merged local and remote branches.
+9. Start the next task from updated `main`.
+
+If many PRs are needed in one session, prefer this safer rhythm:
+
+```text
+task branch -> PR -> merge -> pull main -> next task branch
+```
+
+Use this only when work must be parallelized:
+
+```text
+base branch -> base PR
+dependent branch from base branch -> dependent PR
+merge base PR -> retarget dependent PR to main -> merge dependent PR
+```
 
 ## Commit Convention
 
