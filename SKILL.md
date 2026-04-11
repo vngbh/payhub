@@ -49,8 +49,18 @@ divpay/
 │   ├── ViewModels/
 │   │   └── GroupSplitViewModel.swift
 │   └── Views/
-│       └── Groups/
-│           └── ContentView.swift
+│       ├── Groups/
+│       │   ├── ContentView.swift
+│       │   ├── GroupSplitView.swift
+│       │   └── Sections/
+│       │       ├── BalancesSection.swift
+│       │       ├── ExpenseFormSection.swift
+│       │       ├── ExpensesSection.swift
+│       │       ├── MembersSection.swift
+│       │       ├── OverviewSection.swift
+│       │       └── SettlementsSection.swift
+│       └── Shared/
+│           └── EmptyStateRow.swift
 ├── divpayTests/
 │   ├── Services/
 │   │   └── SplitCalculatorTests.swift
