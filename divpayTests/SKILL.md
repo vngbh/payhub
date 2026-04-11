@@ -23,6 +23,15 @@ divpayTests/
 
 Use folders only when there are enough tests to justify them. Keep the early project simple.
 
+Current structure:
+
+```text
+divpayTests/
+├── Services/
+│   └── SplitCalculatorTests.swift
+└── SKILL.md
+```
+
 ## Test Focus
 
 Prioritize tests for:
@@ -55,4 +64,3 @@ Prioritize tests for:
 - Reference app files from the repository root in docs, for example `divpay/Services/SplitCalculator.swift`.
 - Avoid long relative paths in fixtures or helpers.
 - Prefer in-memory fixtures over external files unless file-based behavior is being tested.
-

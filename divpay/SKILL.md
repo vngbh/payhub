@@ -43,6 +43,28 @@ divpay/
 
 Current app files may still be flatter while the product is early. Move toward the standard structure when a task naturally touches the relevant area.
 
+Current structure:
+
+```text
+divpay/
+├── App/
+│   └── divpayApp.swift
+├── Assets.xcassets/
+├── Models/
+│   ├── Expense.swift
+│   ├── Member.swift
+│   └── Settlement.swift
+├── Services/
+│   ├── CurrencyFormatterService.swift
+│   └── SplitCalculator.swift
+├── SKILL.md
+├── ViewModels/
+│   └── GroupSplitViewModel.swift
+└── Views/
+    └── Groups/
+        └── ContentView.swift
+```
+
 ## Responsibilities
 
 - `App`: app entry point, root scene wiring, app-level dependency setup.
@@ -81,4 +103,3 @@ Current app files may still be flatter while the product is early. Move toward t
 - Use project-root-relative paths in documentation.
 - Avoid `../../../` style path traversal when a clearer base path, API, or resource lookup exists.
 - Use `Bundle`, `FileManager`, asset catalogs, and typed resources instead of fragile hard-coded paths.
-

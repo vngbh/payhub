@@ -1,0 +1,92 @@
+//
+//  SplitCalculatorTests.swift
+//  divpayTests
+//
+
+import XCTest
+@testable import divpay
+
+final class SplitCalculatorTests: XCTestCase {
+    private let calculator = SplitCalculator()
+
+    func testEvenSplitAcrossAllMembers() {
+        let alex = Member(name: "Alex")
+        let bao = Member(name: "Bao")
+        let casey = Member(name: "Casey")
+        let members = [alex, bao, casey]
+        let expense = Expense(
+            title: "Dinner",
+            amount: 90,
+            payerID: alex.id,
+            participantIDs: Set(members.map(\.id))
+        )
+
+        let balances = calculator.balances(for: members, expenses: [expense])
+
+        XCTAssertEqual(balance(for: alex, in: balances)?.paid, 90)
+        XCTAssertEqual(balance(for: alex, in: balances)?.owed, 30)
+        XCTAssertEqual(balance(for: alex, in: balances)?.net, 60)
+        XCTAssertEqual(balance(for: bao, in: balances)?.net, -30)
+        XCTAssertEqual(balance(for: casey, in: balances)?.net, -30)
+    }
+
+    func testPartialSplitOnlyChargesParticipants() {
+        let alex = Member(name: "Alex")
+        let bao = Member(name: "Bao")
+        let casey = Member(name: "Casey")
+        let members = [alex, bao, casey]
+        let expense = Expense(
+            title: "Taxi",
+            amount: 40,
+            payerID: bao.id,
+            participantIDs: [alex.id, bao.id]
+        )
+
+        let balances = calculator.balances(for: members, expenses: [expense])
+
+        XCTAssertEqual(balance(for: alex, in: balances)?.net, -20)
+        XCTAssertEqual(balance(for: bao, in: balances)?.net, 20)
+        XCTAssertEqual(balance(for: casey, in: balances)?.net, 0)
+    }
+
+    func testSettlementsMinimizeTransfers() {
+        let alex = Member(name: "Alex")
+        let bao = Member(name: "Bao")
+        let casey = Member(name: "Casey")
+        let members = [alex, bao, casey]
+        let expenses = [
+            Expense(title: "Dinner", amount: 90, payerID: alex.id, participantIDs: Set(members.map(\.id))),
+            Expense(title: "Dessert", amount: 30, payerID: bao.id, participantIDs: Set(members.map(\.id)))
+        ]
+
+        let settlements = calculator.settlements(for: members, expenses: expenses)
+
+        XCTAssertEqual(settlements.count, 2)
+        XCTAssertEqual(settlements.reduce(Decimal(0)) { $0 + $1.amount }, 50)
+        XCTAssertTrue(settlements.allSatisfy { $0.to.id == alex.id })
+    }
+
+    func testRoundingKeepsTotalOwedEqualToTotalPaid() {
+        let alex = Member(name: "Alex")
+        let bao = Member(name: "Bao")
+        let casey = Member(name: "Casey")
+        let members = [alex, bao, casey]
+        let expense = Expense(
+            title: "Snacks",
+            amount: 10,
+            payerID: alex.id,
+            participantIDs: Set(members.map(\.id))
+        )
+
+        let balances = calculator.balances(for: members, expenses: [expense])
+        let totalPaid = balances.reduce(Decimal(0)) { $0 + $1.paid }
+        let totalOwed = balances.reduce(Decimal(0)) { $0 + $1.owed }
+
+        XCTAssertEqual(totalPaid, 10)
+        XCTAssertEqual(totalOwed, 10)
+    }
+
+    private func balance(for member: Member, in balances: [MemberBalance]) -> MemberBalance? {
+        balances.first { $0.member.id == member.id }
+    }
+}
