@@ -23,6 +23,7 @@ Current structure:
 
 ```text
 divpay/
+├── .gitignore
 ├── SKILL.md
 ├── README.md
 ├── docs/
@@ -209,6 +210,14 @@ Rules:
 - Open a PR for every task, even documentation-only work.
 - Merge PRs before starting dependent work when possible.
 - Delete local and remote task branches after their PRs are merged.
+
+Generated file hygiene:
+
+- Keep generated build outputs, user-specific IDE state, simulator artifacts, and local environment files out of Git.
+- Prefer updating the repository `.gitignore` when repeated generated files appear in `git status`.
+- Do not manually delete generated files over and over if they should be ignored.
+- Do not ignore source files, shared project configuration, assets, fixtures, or documentation needed by other developers.
+- If a generated file is already tracked, remove it from Git tracking in the same PR that adds the ignore rule.
 
 Branch naming:
 
