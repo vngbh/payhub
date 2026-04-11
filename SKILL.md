@@ -15,6 +15,14 @@ Current structure:
 divpay/
 ├── SKILL.md
 ├── README.md
+├── docs/
+│   ├── SKILL.md
+│   ├── components/
+│   │   ├── COMPONENTS.md
+│   │   └── SKILL.md
+│   └── translate/
+│       ├── SKILL.md
+│       └── TRANSLATE.md
 ├── divpay.xcodeproj/
 ├── divpay/
 │   ├── Assets.xcassets/
@@ -82,6 +90,9 @@ divpay/
 Local skill files:
 
 - Root `SKILL.md`: repository-wide structure, Git, PR, commit, clean code, and path conventions.
+- `docs/SKILL.md`: documentation and instruction-file conventions.
+- `docs/components/SKILL.md`: component documentation and UI component instruction conventions.
+- `docs/translate/SKILL.md`: translation and localization instruction conventions.
 - `divpay/SKILL.md`: main app target conventions for SwiftUI, models, view models, services, resources, and app structure.
 - `divpayTests/SKILL.md`: unit test conventions for domain logic and service behavior.
 - `divpayUITests/SKILL.md`: UI test conventions for launch, user flows, accessibility identifiers, and screenshots.
