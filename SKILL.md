@@ -1,9 +1,9 @@
 ---
-name: divpay-project-conventions
-description: Use this skill when working on the Divpay iOS project to follow project structure, Git, branch, commit, pull request, and documentation conventions.
+name: payhub-project-conventions
+description: Use this skill when working on the payhub iOS project to follow project structure, Git, branch, commit, pull request, and documentation conventions.
 ---
 
-# Divpay Project Conventions
+# payhub Project Conventions
 
 Use this file as the working agreement for every task in this repository. Before changing code, read the current project structure and keep this file updated when the structure changes.
 
@@ -12,6 +12,7 @@ Use this file as the working agreement for every task in this repository. Before
 Use English across the entire project:
 
 - Write documentation, `SKILL.md` files, comments, commit messages, branch names, PR titles, and PR descriptions in English.
+- Spell the product name as `payhub` in lowercase everywhere, including headings, user-facing copy, documentation, branch names, and PR titles.
 - Write code identifiers, file names, folders, test names, fixtures, and accessibility identifiers in English.
 - Use English as the default user-facing product copy unless a task is explicitly about localization.
 - Put translations in localization resources or files under `docs/translate`; do not mix languages inside source files or general project documentation.
@@ -22,7 +23,7 @@ Use English across the entire project:
 Current structure:
 
 ```text
-divpay/
+payhub/
 ├── .gitignore
 ├── SKILL.md
 ├── README.md
@@ -34,10 +35,10 @@ divpay/
 │   └── translate/
 │       ├── SKILL.md
 │       └── TRANSLATE.md
-├── divpay.xcodeproj/
-├── divpay/
+├── payhub.xcodeproj/
+├── payhub/
 │   ├── App/
-│   │   └── divpayApp.swift
+│   │   └── payhubApp.swift
 │   ├── Assets.xcassets/
 │   ├── Models/
 │   │   ├── Expense.swift
@@ -62,20 +63,20 @@ divpay/
 │       │       └── SettlementsSection.swift
 │       └── Shared/
 │           └── EmptyStateRow.swift
-├── divpayTests/
+├── payhubTests/
 │   ├── Services/
 │   │   └── SplitCalculatorTests.swift
 │   └── SKILL.md
-└── divpayUITests/
+└── payhubUITests/
     ├── SKILL.md
-    ├── divpayUITests.swift
-    └── divpayUITestsLaunchTests.swift
+    ├── payhubUITests.swift
+    └── payhubUITestsLaunchTests.swift
 ```
 
 Planned structure as the app grows:
 
 ```text
-divpay/
+payhub/
 ├── SKILL.md
 ├── App/
 ├── Models/
@@ -92,10 +93,10 @@ divpay/
 The main app target should stay organized around a small, predictable structure:
 
 ```text
-divpay/
+payhub/
 ├── SKILL.md
 ├── App/
-│   └── divpayApp.swift
+│   └── payhubApp.swift
 ├── Models/
 │   ├── Member.swift
 │   ├── Expense.swift
@@ -127,9 +128,9 @@ Local skill files:
 - `docs/SKILL.md`: documentation and instruction-file conventions.
 - `docs/components/SKILL.md`: component documentation and UI component instruction conventions.
 - `docs/translate/SKILL.md`: translation and localization instruction conventions.
-- `divpay/SKILL.md`: main app target conventions for SwiftUI, models, view models, services, resources, and app structure.
-- `divpayTests/SKILL.md`: unit test conventions for domain logic and service behavior.
-- `divpayUITests/SKILL.md`: UI test conventions for launch, user flows, accessibility identifiers, and screenshots.
+- `payhub/SKILL.md`: main app target conventions for SwiftUI, models, view models, services, resources, and app structure.
+- `payhubTests/SKILL.md`: unit test conventions for domain logic and service behavior.
+- `payhubUITests/SKILL.md`: UI test conventions for launch, user flows, accessibility identifiers, and screenshots.
 
 Folder responsibilities:
 
@@ -192,7 +193,7 @@ Keep paths simple and stable:
 - Avoid long chains like `../../../..` when a cleaner option exists.
 - If repeated path traversal appears, introduce a named base path, helper, build setting, or small utility instead.
 - Do not hard-code machine-specific paths inside app code.
-- In docs, use paths from the repository root, for example `divpay/ContentView.swift`.
+- In docs, use paths from the repository root, for example `payhub/ContentView.swift`.
 - In Swift code, prefer platform APIs such as `Bundle`, `FileManager`, asset catalogs, and typed resources instead of hand-built fragile paths.
 - Keep imports minimal; remove unused imports when touching a file.
 - Do not add global path helpers unless they remove real repetition or confusion.
@@ -385,8 +386,8 @@ Run these before opening a PR when Xcode is configured:
 
 ```sh
 xcodebuild \
-  -project divpay.xcodeproj \
-  -scheme divpay \
+  -project payhub.xcodeproj \
+  -scheme payhub \
   -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 17' \
   test

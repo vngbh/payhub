@@ -1,9 +1,9 @@
 ---
-name: divpay-docs-conventions
+name: payhub-docs-conventions
 description: Use this skill when creating or updating instruction documents under docs, including component guides, translation guides, design notes, and AI working instructions.
 ---
 
-# Divpay Docs Conventions
+# payhub Docs Conventions
 
 This folder stores project instructions that help humans and AI agents work consistently.
 

@@ -1,6 +1,6 @@
 # Translation Instructions
 
-Use this document when writing or translating user-facing copy for Divpay.
+Use this document when writing or translating user-facing copy for payhub.
 
 ## Supported Languages
 

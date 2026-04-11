@@ -1,16 +1,16 @@
-# Divpay
+# payhub
 
-Divpay is an iOS app for splitting shared expenses after meals, hangouts, short trips, or any group activity. The product goal is to make it fast to record who paid, who participated, and who should transfer money to whom with the fewest settlement transactions possible.
+payhub is an iOS app for splitting shared expenses after meals, hangouts, short trips, or any group activity. The product goal is to make it fast to record who paid, who participated, and who should transfer money to whom with the fewest settlement transactions possible.
 
 ## Current Status
 
 - Platform: iOS / iPadOS
 - UI framework: SwiftUI
-- Project: Xcode project (`divpay.xcodeproj`)
-- App target: `divpay`
-- Unit test target: `divpayTests`
-- UI test target: `divpayUITests`
-- Bundle ID: `com.vngbh.divpay`
+- Project: Xcode project (`payhub.xcodeproj`)
+- App target: `payhub`
+- Unit test target: `payhubTests`
+- UI test target: `payhubUITests`
+- Bundle ID: `com.vngbh.payhub`
 - Current version: `1.0` build `1`
 - Current iOS deployment target: `26.2`
 
@@ -45,12 +45,12 @@ xcodebuild -version
 Open the project in Xcode:
 
 ```sh
-open divpay.xcodeproj
+open payhub.xcodeproj
 ```
 
 In Xcode:
 
-1. Select the `divpay` scheme.
+1. Select the `payhub` scheme.
 2. Select an available simulator, for example `iPhone 17`.
 3. Press `Cmd + R` to build and run the app.
 4. Press `Cmd + U` to run tests.
@@ -60,7 +60,7 @@ In Xcode:
 List schemes, targets, and configurations:
 
 ```sh
-xcodebuild -list -project divpay.xcodeproj
+xcodebuild -list -project payhub.xcodeproj
 ```
 
 List available simulators:
@@ -79,8 +79,8 @@ Build Debug for iOS Simulator:
 
 ```sh
 xcodebuild \
-  -project divpay.xcodeproj \
-  -scheme divpay \
+  -project payhub.xcodeproj \
+  -scheme payhub \
   -configuration Debug \
   -destination 'generic/platform=iOS Simulator' \
   build
@@ -90,8 +90,8 @@ Run unit tests and UI tests on a simulator:
 
 ```sh
 xcodebuild \
-  -project divpay.xcodeproj \
-  -scheme divpay \
+  -project payhub.xcodeproj \
+  -scheme payhub \
   -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 17' \
   test
@@ -106,7 +106,7 @@ xcrun simctl list devices available
 Remove project-specific DerivedData when a build cache issue appears:
 
 ```sh
-rm -rf ~/Library/Developer/Xcode/DerivedData/divpay-*
+rm -rf ~/Library/Developer/Xcode/DerivedData/payhub-*
 ```
 
 ## Run On Simulator From Command Line
@@ -124,8 +124,8 @@ Build the app into a dedicated derived data folder:
 
 ```sh
 xcodebuild \
-  -project divpay.xcodeproj \
-  -scheme divpay \
+  -project payhub.xcodeproj \
+  -scheme payhub \
   -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 17' \
   -derivedDataPath build/DerivedData \
@@ -135,8 +135,8 @@ xcodebuild \
 Install and launch the app:
 
 ```sh
-xcrun simctl install booted build/DerivedData/Build/Products/Debug-iphonesimulator/divpay.app
-xcrun simctl launch booted com.vngbh.divpay
+xcrun simctl install booted build/DerivedData/Build/Products/Debug-iphonesimulator/payhub.app
+xcrun simctl launch booted com.vngbh.payhub
 ```
 
 ## Development Workflow
@@ -154,8 +154,8 @@ Run this before opening a PR when Xcode is configured:
 
 ```sh
 xcodebuild \
-  -project divpay.xcodeproj \
-  -scheme divpay \
+  -project payhub.xcodeproj \
+  -scheme payhub \
   -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 17' \
   test
@@ -217,8 +217,8 @@ Build Release for simulator to catch compile issues:
 
 ```sh
 xcodebuild \
-  -project divpay.xcodeproj \
-  -scheme divpay \
+  -project payhub.xcodeproj \
+  -scheme payhub \
   -configuration Release \
   -destination 'generic/platform=iOS Simulator' \
   build
@@ -228,11 +228,11 @@ Archive for TestFlight or App Store upload:
 
 ```sh
 xcodebuild \
-  -project divpay.xcodeproj \
-  -scheme divpay \
+  -project payhub.xcodeproj \
+  -scheme payhub \
   -configuration Release \
   -destination 'generic/platform=iOS' \
-  -archivePath build/divpay.xcarchive \
+  -archivePath build/payhub.xcarchive \
   archive
 ```
 
@@ -241,7 +241,7 @@ Exporting an archive requires an `ExportOptions.plist` that matches the distribu
 ```sh
 xcodebuild \
   -exportArchive \
-  -archivePath build/divpay.xcarchive \
+  -archivePath build/payhub.xcarchive \
   -exportPath build/export \
   -exportOptionsPlist ExportOptions.plist
 ```
