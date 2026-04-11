@@ -3,9 +3,12 @@
 //  payhub
 //
 
+import Inject
 import SwiftUI
 
 struct SettlementsSection: View {
+    @ObserveInjection var inject
+
     let settlements: [SettlementTransaction]
     let hasExpenses: Bool
     let currencyFormatter: CurrencyFormatterService
@@ -20,6 +23,6 @@ struct SettlementsSection: View {
                 }
             }
         }
+        .enableInjection()
     }
 }
-

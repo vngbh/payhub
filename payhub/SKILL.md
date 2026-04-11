@@ -102,6 +102,9 @@ payhub/
 - Prefer small reusable components in `Views/Shared` only after reuse is real.
 - Give important UI elements stable accessibility identifiers when they are needed by UI tests.
 - Keep previews lightweight and deterministic.
+- Use `Inject` hot reload only in SwiftUI views where live UI iteration is useful.
+- Add `@ObserveInjection` and `.enableInjection()` together when instrumenting a view for hot reload.
+- Do not put hot reload hooks in models, services, or view models.
 
 ## Business Logic Rules
 

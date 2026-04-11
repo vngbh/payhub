@@ -36,6 +36,10 @@ payhub/
 │       ├── SKILL.md
 │       └── TRANSLATE.md
 ├── payhub.xcodeproj/
+│   └── project.xcworkspace/
+│       └── xcshareddata/
+│           └── swiftpm/
+│               └── Package.resolved
 ├── payhub/
 │   ├── App/
 │   │   └── payhubApp.swift
@@ -184,6 +188,15 @@ Follow clean code principles for every change:
 - Keep public APIs minimal and meaningful.
 - Preserve existing project style unless there is a strong reason to improve it.
 - When a change becomes too large, split it into smaller tasks or PRs.
+
+## Development Tooling
+
+- Hot reload is a Debug-only developer workflow for SwiftUI iteration.
+- Use the `Inject` Swift package together with the InjectionIII macOS app.
+- Keep hot reload instrumentation out of business logic, services, models, and tests.
+- Add `@ObserveInjection` and `.enableInjection()` only to SwiftUI views that benefit from live UI refresh.
+- Keep `-Xlinker -interposable` limited to Debug builds.
+- Do not depend on hot reload for correctness; still run normal builds and tests before PRs.
 
 ## Path And Import Hygiene
 

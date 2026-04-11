@@ -23,6 +23,10 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXBuildFile section */
+		5C1340002F8B000000561722 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 5C1340012F8B000000561722 /* Inject */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		5C133FA62F8A38B600561722 /* payhub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = payhub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C133FB32F8A38B800561722 /* payhubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = payhubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C1340002F8B000000561722 /* Inject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = payhub;
 			packageProductDependencies = (
+				5C1340012F8B000000561722 /* Inject */,
 			);
 			productName = payhub;
 			productReference = 5C133FA62F8A38B600561722 /* payhub.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 5C133F9D2F8A38B600561722;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5C1340022F8B000000561722 /* XCRemoteSwiftPackageReference "Inject" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5C133FA72F8A38B600561722 /* Products */;
 			projectDirPath = "";
@@ -326,6 +335,11 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Xlinker",
+					"-interposable",
+				);
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -570,6 +584,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5C1340022F8B000000561722 /* XCRemoteSwiftPackageReference "Inject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Inject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5C1340012F8B000000561722 /* Inject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5C1340022F8B000000561722 /* XCRemoteSwiftPackageReference "Inject" */;
+			productName = Inject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5C133F9E2F8A38B600561722 /* Project object */;
 }
