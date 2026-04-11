@@ -155,12 +155,14 @@ PR title format:
 [Edited Place] Content Here
 ```
 
+Use Title Case for the content part: capitalize the first letter of each important word.
+
 Examples:
 
 ```text
-[README] Add build and launch process
-[SplitService] Add settlement calculation
-[ExpenseForm] Add participant selection
+[README] Add Build And Launch Process
+[SplitService] Add Settlement Calculation
+[ExpenseForm] Add Participant Selection
 ```
 
 PR body format:
