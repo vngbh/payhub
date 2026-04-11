@@ -19,10 +19,13 @@ divpay/
 ├── divpay/
 │   ├── Assets.xcassets/
 │   ├── ContentView.swift
+│   ├── SKILL.md
 │   └── divpayApp.swift
 ├── divpayTests/
+│   ├── SKILL.md
 │   └── divpayTests.swift
 └── divpayUITests/
+    ├── SKILL.md
     ├── divpayUITests.swift
     └── divpayUITestsLaunchTests.swift
 ```
@@ -31,13 +34,75 @@ Planned structure as the app grows:
 
 ```text
 divpay/
+├── SKILL.md
+├── App/
 ├── Models/
 ├── Views/
 ├── ViewModels/
 ├── Services/
 ├── Utilities/
+├── Resources/
 └── Assets.xcassets/
 ```
+
+## App Structure Standard
+
+The main app target should stay organized around a small, predictable structure:
+
+```text
+divpay/
+├── SKILL.md
+├── App/
+│   └── divpayApp.swift
+├── Models/
+│   ├── Member.swift
+│   ├── Expense.swift
+│   ├── Group.swift
+│   └── Settlement.swift
+├── Views/
+│   ├── Groups/
+│   ├── Expenses/
+│   ├── Settlement/
+│   └── Shared/
+├── ViewModels/
+│   ├── GroupsViewModel.swift
+│   ├── ExpenseFormViewModel.swift
+│   └── SettlementViewModel.swift
+├── Services/
+│   ├── SplitCalculator.swift
+│   ├── StorageService.swift
+│   └── CurrencyFormatterService.swift
+├── Utilities/
+│   └── Extensions/
+├── Resources/
+│   └── Localizable.xcstrings
+└── Assets.xcassets/
+```
+
+Local skill files:
+
+- Root `SKILL.md`: repository-wide structure, Git, PR, commit, clean code, and path conventions.
+- `divpay/SKILL.md`: main app target conventions for SwiftUI, models, view models, services, resources, and app structure.
+- `divpayTests/SKILL.md`: unit test conventions for domain logic and service behavior.
+- `divpayUITests/SKILL.md`: UI test conventions for launch, user flows, accessibility identifiers, and screenshots.
+
+Folder responsibilities:
+
+- `App`: app entry point, app-level dependency setup, root scene wiring.
+- `Models`: plain Swift data types and domain entities.
+- `Views`: SwiftUI screens and reusable components, grouped by feature.
+- `ViewModels`: screen state, user actions, validation, and coordination between views and services.
+- `Services`: reusable business logic, persistence, formatting, import/export, and system integrations.
+- `Utilities`: small generic helpers and extensions that are not specific to one feature.
+- `Resources`: localization, static data, and non-asset resource files.
+- `Assets.xcassets`: colors, icons, images, and app icon assets.
+
+Structure change rule:
+
+- If a task adds, removes, renames, or moves a folder in the main app structure, propose an update to this `SKILL.md`.
+- If a task introduces a new architectural layer, shared service, resource convention, or feature grouping that affects where future files should live, propose an update to this `SKILL.md`.
+- If a task only edits implementation inside the existing structure, no structure update is required unless the change reveals that the current convention is misleading.
+- When proposing a structure update, include it in the same PR as the structural change unless the user asks to split documentation separately.
 
 Guidelines:
 
