@@ -1,81 +1,81 @@
 # Divpay
 
-Divpay la ung dung iOS giup chia tien cho mot nhom nguoi sau mot buoi an uong, di choi, du lich ngan ngay, hoac bat ky chi phi chung nao. Muc tieu san pham la nhap chi phi nhanh, biet ai da tra, ai can tra lai cho ai, va giam so giao dich can chuyen tien.
+Divpay is an iOS app for splitting shared expenses after meals, hangouts, short trips, or any group activity. The product goal is to make it fast to record who paid, who participated, and who should transfer money to whom with the fewest settlement transactions possible.
 
-## Trang thai hien tai
+## Current Status
 
-- Nen tang: iOS / iPadOS
+- Platform: iOS / iPadOS
 - UI framework: SwiftUI
 - Project: Xcode project (`divpay.xcodeproj`)
 - App target: `divpay`
 - Unit test target: `divpayTests`
 - UI test target: `divpayUITests`
 - Bundle ID: `com.vngbh.divpay`
-- Version hien tai: `1.0` build `1`
-- iOS deployment target hien tai: `26.2`
+- Current version: `1.0` build `1`
+- Current iOS deployment target: `26.2`
 
-## Yeu cau moi truong
+## Environment Requirements
 
-- macOS co cai Xcode day du, khong chi Command Line Tools.
-- Xcode phien ban ho tro iOS deployment target cua project.
-- iOS Simulator duoc cai trong Xcode.
-- Apple Developer account neu muon build len thiet bi that, TestFlight, hoac App Store.
+- macOS with the full Xcode app installed, not only Command Line Tools.
+- An Xcode version that supports the project's iOS deployment target.
+- iOS Simulator installed through Xcode.
+- An Apple Developer account if you want to build for a real device, TestFlight, or App Store release.
 
-Kiem tra toolchain:
+Check the active toolchain:
 
 ```sh
 xcode-select -p
 xcodebuild -version
 ```
 
-Neu `xcodebuild` bao loi dang nhu `tool 'xcodebuild' requires Xcode, but active developer directory ... is a command line tools instance`, chuyen developer directory sang Xcode:
+If `xcodebuild` reports an error like `tool 'xcodebuild' requires Xcode, but active developer directory ... is a command line tools instance`, switch the active developer directory to Xcode:
 
 ```sh
 sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 ```
 
-Sau do kiem tra lai:
+Then verify again:
 
 ```sh
 xcodebuild -version
 ```
 
-## Mo project de phat trien
+## Open The Project
 
-Mo bang Xcode:
+Open the project in Xcode:
 
 ```sh
 open divpay.xcodeproj
 ```
 
-Trong Xcode:
+In Xcode:
 
-1. Chon scheme `divpay`.
-2. Chon simulator, vi du `iPhone 17` hoac mot simulator kha dung tren may.
-3. Bam `Cmd + R` de build va chay app.
-4. Bam `Cmd + U` de chay test.
+1. Select the `divpay` scheme.
+2. Select an available simulator, for example `iPhone 17`.
+3. Press `Cmd + R` to build and run the app.
+4. Press `Cmd + U` to run tests.
 
-## Lenh co ban
+## Common Commands
 
-Liet ke scheme, target va configuration:
+List schemes, targets, and configurations:
 
 ```sh
 xcodebuild -list -project divpay.xcodeproj
 ```
 
-Liet ke simulator kha dung:
+List available simulators:
 
 ```sh
 xcrun simctl list devices available
 ```
 
-Mo Simulator:
+Open Simulator:
 
 ```sh
 open -a Simulator
 ```
 
-Build Debug cho iOS Simulator:
+Build Debug for iOS Simulator:
 
 ```sh
 xcodebuild \
@@ -86,7 +86,7 @@ xcodebuild \
   build
 ```
 
-Chay unit test va UI test tren simulator:
+Run unit tests and UI tests on a simulator:
 
 ```sh
 xcodebuild \
@@ -97,30 +97,30 @@ xcodebuild \
   test
 ```
 
-Neu may khong co `iPhone 17`, thay bang ten simulator trong ket qua cua:
+If `iPhone 17` is not available on your machine, replace it with a simulator name from:
 
 ```sh
 xcrun simctl list devices available
 ```
 
-Xoa build cache rieng cua project khi gap loi build la:
+Remove project-specific DerivedData when a build cache issue appears:
 
 ```sh
 rm -rf ~/Library/Developer/Xcode/DerivedData/divpay-*
 ```
 
-## Chay app tren simulator bang command line
+## Run On Simulator From Command Line
 
-Cach don gian nhat la dung Xcode voi `Cmd + R`. Khi can automation, co the build roi install app vao simulator.
+The simplest path is Xcode with `Cmd + R`. For automation, build the app and install it into a booted simulator.
 
-Boot simulator:
+Boot a simulator:
 
 ```sh
 xcrun simctl boot 'iPhone 17'
 open -a Simulator
 ```
 
-Build app vao thu muc rieng:
+Build the app into a dedicated derived data folder:
 
 ```sh
 xcodebuild \
@@ -132,25 +132,25 @@ xcodebuild \
   build
 ```
 
-Install va launch app:
+Install and launch the app:
 
 ```sh
 xcrun simctl install booted build/DerivedData/Build/Products/Debug-iphonesimulator/divpay.app
 xcrun simctl launch booted com.vngbh.divpay
 ```
 
-## Quy trinh phat trien de vibe coding
+## Development Workflow
 
-Moi vong lam viec nen di theo nhip sau:
+Each development loop should stay small:
 
-1. Chon mot muc tieu nho, vi du `tao man hinh them hoa don`, `tinh so tien moi nguoi can tra`, hoac `luu danh sach thanh vien`.
-2. Cap nhat code.
-3. Build tren simulator.
-4. Chay test lien quan.
-5. Tu test luong chinh tren simulator.
-6. Commit khi app build duoc va hanh vi on.
+1. Pick one focused task, such as `add expense form`, `calculate balances`, or `store members locally`.
+2. Update the code.
+3. Build on a simulator.
+4. Run relevant tests.
+5. Manually test the main flow on a simulator.
+6. Commit when the app builds and the behavior is stable.
 
-Lenh kiem tra truoc khi commit:
+Run this before opening a PR when Xcode is configured:
 
 ```sh
 xcodebuild \
@@ -161,59 +161,59 @@ xcodebuild \
   test
 ```
 
-Commit goi y:
+Suggested commit flow:
 
 ```sh
 git status
 git add .
-git commit -m "Build initial bill splitting flow"
+git commit -m "feat/add-expense-form"
 ```
 
-## Kien truc de giu project gon
+## Architecture Direction
 
-Khi app lon hon, nen tach code theo cac lop sau:
+As the app grows, keep code organized around these areas:
 
-- `Models`: du lieu chinh nhu group, member, expense, split result.
-- `Views`: SwiftUI screen va component.
-- `ViewModels`: state va logic dieu phoi cho tung man hinh.
-- `Services`: tinh toan chia tien, luu tru, import/export.
-- `Tests`: test logic chia tien va cac edge case.
+- `Models`: core data such as group, member, expense, and settlement result.
+- `Views`: SwiftUI screens and components.
+- `ViewModels`: screen state and action coordination.
+- `Services`: split calculation, persistence, formatting, import, and export.
+- `Tests`: coverage for domain logic and important user flows.
 
-Logic chia tien nen duoc viet o lop thuan Swift de test duoc bang unit test, tranh de logic nam qua nhieu trong SwiftUI view.
+Bill-splitting logic should live in plain Swift models or services so it can be unit tested. Avoid spreading calculation rules across SwiftUI views.
 
-## Checklist tinh nang MVP
+## MVP Checklist
 
-- Tao nhom.
-- Them thanh vien.
-- Them khoan chi: ten, so tien, nguoi tra, nguoi tham gia.
-- Tinh tong tien moi nguoi da tra.
-- Tinh so tien moi nguoi thuc su phai chiu.
-- De xuat giao dich toi thieu: ai chuyen cho ai bao nhieu.
-- Sua/xoa khoan chi.
-- Luu du lieu local.
-- Man hinh tong ket de share ket qua.
+- Create a group.
+- Add members.
+- Add an expense with title, amount, payer, and participants.
+- Calculate how much each person paid.
+- Calculate how much each person should owe.
+- Suggest the minimum settlement transactions.
+- Edit or delete expenses.
+- Save data locally.
+- Share the settlement summary.
 
-## Test can co
+## Test Coverage
 
-Unit test nen uu tien cac case:
+Prioritize unit tests for:
 
-- Tat ca thanh vien chia deu mot hoa don.
-- Mot nguoi tra nhieu hoa don cho ca nhom.
-- Mot hoa don chi co mot so thanh vien tham gia.
-- So tien le va lam tron.
-- Tong tien nhan ve bang tong tien can tra.
-- Khong tao giao dich khi tat ca da can bang.
+- All members splitting one expense evenly.
+- One person paying multiple expenses for the group.
+- One expense involving only some members.
+- Decimal amounts and rounding behavior.
+- Total money received matching total money owed.
+- No settlement transactions when everyone is already balanced.
 
-UI test nen bao phu:
+Prioritize UI tests for:
 
-- Launch app thanh cong.
-- Tao group moi.
-- Them expense moi.
-- Xem ket qua chia tien.
+- App launches successfully.
+- A new group can be created.
+- A new expense can be added.
+- The settlement result can be viewed.
 
 ## Build Release
 
-Build Release cho simulator de bat loi compile:
+Build Release for simulator to catch compile issues:
 
 ```sh
 xcodebuild \
@@ -224,7 +224,7 @@ xcodebuild \
   build
 ```
 
-Archive de upload TestFlight/App Store:
+Archive for TestFlight or App Store upload:
 
 ```sh
 xcodebuild \
@@ -236,7 +236,7 @@ xcodebuild \
   archive
 ```
 
-Export archive can co file `ExportOptions.plist` phu hop voi cach phan phoi (`development`, `ad-hoc`, `app-store-connect`, hoac `enterprise`). Vi project chua co file nay, tao khi bat dau TestFlight/App Store.
+Exporting an archive requires an `ExportOptions.plist` that matches the distribution method, such as `development`, `ad-hoc`, `app-store-connect`, or `enterprise`. This project does not have that file yet; create it when TestFlight or App Store distribution begins.
 
 ```sh
 xcodebuild \
@@ -246,45 +246,44 @@ xcodebuild \
   -exportOptionsPlist ExportOptions.plist
 ```
 
-## Checklist truoc TestFlight
+## Pre-TestFlight Checklist
 
-- Cap nhat `MARKETING_VERSION` va `CURRENT_PROJECT_VERSION`.
-- Dat bundle ID dung voi Apple Developer portal.
-- Cau hinh signing team trong Xcode.
-- Them app icon day du.
-- Kiem tra launch screen.
-- Chay unit test va UI test.
-- Test tren it nhat mot iPhone simulator va mot iPad simulator neu tiep tuc support iPad.
-- Test tren thiet bi that neu co.
-- Viet mo ta ban build: tinh nang moi, loi da biet, luong can test.
+- Update `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`.
+- Make sure the bundle ID matches the Apple Developer portal.
+- Configure the signing team in Xcode.
+- Add complete app icons.
+- Check the launch screen.
+- Run unit tests and UI tests.
+- Test on at least one iPhone simulator and one iPad simulator if iPad remains supported.
+- Test on a real device when available.
+- Write build notes that include new features, known issues, and flows to test.
 
 ## Troubleshooting
 
-Kiem tra Xcode dang duoc chon:
+Check the selected Xcode developer directory:
 
 ```sh
 xcode-select -p
 ```
 
-Kiem tra simulator co ton tai:
+Check available simulators:
 
 ```sh
 xcrun simctl list devices available
 ```
 
-Reset simulator dang boot:
+Reset the booted simulator:
 
 ```sh
 xcrun simctl shutdown booted
 xcrun simctl erase booted
 ```
 
-Neu `xcrun simctl erase booted` bao loi vi khong co simulator dang boot, hay boot simulator truoc hoac erase theo device ID trong danh sach simulator.
+If `xcrun simctl erase booted` fails because no simulator is booted, boot a simulator first or erase a specific device ID from the simulator list.
 
-Kiem tra git truoc khi commit:
+Check Git before committing:
 
 ```sh
 git status --short
 git diff
 ```
-
