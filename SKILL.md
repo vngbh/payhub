@@ -363,6 +363,13 @@ Rules:
 - Mention any known limitation or follow-up if the task is intentionally incomplete.
 - Do not merge a PR if the app does not build or relevant tests fail, unless the PR explicitly documents why.
 
+Merge method:
+
+- Use a normal merge commit when merging PRs into `main`.
+- Do not use squash merge or rebase merge by default.
+- Keep the PR branch visible in the Git graph so each task branch and merge point remains traceable.
+- Only use squash merge or rebase merge if the user explicitly asks for that specific merge method.
+
 ## Pre-PR Checklist
 
 Run these before opening a PR when Xcode is configured:
