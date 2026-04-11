@@ -318,7 +318,7 @@ merge base PR -> retarget dependent PR to main -> merge dependent PR
 Commit messages must follow:
 
 ```text
-type/short-description
+type: message
 ```
 
 Allowed types:
@@ -334,13 +334,13 @@ Allowed types:
 Examples:
 
 ```text
-feat/add-expense-form
-fix/settlement-rounding
-docs/add-development-process
-style/polish-summary-screen
-refactor/extract-split-calculator
-test/add-even-split-tests
-chore/configure-ci
+feat: add expense form
+fix: settle rounding error
+docs: add development process
+style: polish summary screen
+refactor: extract split calculator
+test: add even split tests
+chore: configure ci
 ```
 
 Keep commits focused. If one task changes unrelated areas, split it into separate commits or separate branches.
