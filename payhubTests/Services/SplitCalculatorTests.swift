@@ -66,7 +66,7 @@ final class SplitCalculatorTests: XCTestCase {
         XCTAssertTrue(settlements.allSatisfy { $0.to.id == alex.id })
     }
 
-    func testRoundingKeepsTotalOwedEqualToTotalPaid() {
+    func testDecimalSplitKeepsTotalOwedEqualToTotalPaid() {
         let alex = Member(name: "Alex")
         let bao = Member(name: "Bao")
         let casey = Member(name: "Casey")
@@ -84,6 +84,27 @@ final class SplitCalculatorTests: XCTestCase {
 
         XCTAssertEqual(totalPaid, 10)
         XCTAssertEqual(totalOwed, 10)
+    }
+
+    func testDecimalSplitKeepsFractionalAmountsInData() {
+        let alex = Member(name: "Alex")
+        let bao = Member(name: "Bao")
+        let casey = Member(name: "Casey")
+        let members = [alex, bao, casey]
+        let expense = Expense(
+            title: "Snacks",
+            amount: 10,
+            payerID: alex.id,
+            participantIDs: Set(members.map(\.id))
+        )
+
+        let balances = calculator.balances(for: members, expenses: [expense])
+
+        XCTAssertTrue(balances.contains { balance in
+            let integerAmount = NSDecimalNumber(decimal: balance.owed).intValue
+            return balance.owed != Decimal(integerAmount)
+        })
+        XCTAssertEqual(balances.reduce(Decimal(0)) { $0 + $1.owed }, 10)
     }
 
     private func balance(for member: Member, in balances: [MemberBalance]) -> MemberBalance? {
