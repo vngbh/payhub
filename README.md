@@ -139,6 +139,33 @@ xcrun simctl install booted build/DerivedData/Build/Products/Debug-iphonesimulat
 xcrun simctl launch booted com.vngbh.payhub
 ```
 
+## Hot Reload
+
+payhub supports SwiftUI hot reload in Debug builds through the `Inject` Swift package and the InjectionIII macOS app.
+
+Install InjectionIII:
+
+```sh
+brew install --cask injectioniii
+```
+
+Or install it from the Mac App Store, then open InjectionIII from `/Applications`.
+
+Use hot reload:
+
+1. Open InjectionIII and select the repository folder when prompted.
+2. Open the project in Xcode:
+
+```sh
+open payhub.xcodeproj
+```
+
+3. Select the `payhub` scheme and run the app on a simulator with `Cmd + R`.
+4. Edit a SwiftUI view that is instrumented with `@ObserveInjection` and `.enableInjection()`.
+5. Save the file. InjectionIII recompiles and injects the changed implementation into the running Debug app.
+
+Hot reload is for fast UI iteration only. Run a normal build and relevant tests before opening a PR.
+
 ## Development Workflow
 
 Each development loop should stay small:

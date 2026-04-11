@@ -3,9 +3,12 @@
 //  payhub
 //
 
+import Inject
 import SwiftUI
 
 struct MembersSection: View {
+    @ObserveInjection var inject
+
     @ObservedObject var viewModel: GroupSplitViewModel
 
     var body: some View {
@@ -29,6 +32,7 @@ struct MembersSection: View {
                 )
             }
         }
+        .enableInjection()
     }
 }
 
@@ -51,4 +55,3 @@ private struct MemberRow: View {
         }
     }
 }
-

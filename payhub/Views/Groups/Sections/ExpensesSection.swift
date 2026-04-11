@@ -3,9 +3,12 @@
 //  payhub
 //
 
+import Inject
 import SwiftUI
 
 struct ExpensesSection: View {
+    @ObserveInjection var inject
+
     let expenses: [Expense]
     let currencyFormatter: CurrencyFormatterService
     let memberName: (UUID) -> String
@@ -30,6 +33,7 @@ struct ExpensesSection: View {
                 }
             }
         }
+        .enableInjection()
     }
 }
 
@@ -56,4 +60,3 @@ private struct ExpenseRow: View {
         }
     }
 }
-

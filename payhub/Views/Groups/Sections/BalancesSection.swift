@@ -3,9 +3,12 @@
 //  payhub
 //
 
+import Inject
 import SwiftUI
 
 struct BalancesSection: View {
+    @ObserveInjection var inject
+
     let balances: [MemberBalance]
     let currencyFormatter: CurrencyFormatterService
 
@@ -18,6 +21,7 @@ struct BalancesSection: View {
                 )
             }
         }
+        .enableInjection()
     }
 }
 
@@ -44,4 +48,3 @@ private struct BalanceRow: View {
         }
     }
 }
-

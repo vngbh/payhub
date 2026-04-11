@@ -3,9 +3,12 @@
 //  payhub
 //
 
+import Inject
 import SwiftUI
 
 struct OverviewSection: View {
+    @ObserveInjection var inject
+
     let totalSpent: Decimal
     let currencyFormatter: CurrencyFormatterService
 
@@ -26,6 +29,6 @@ struct OverviewSection: View {
             }
             .padding(.vertical, 8)
         }
+        .enableInjection()
     }
 }
-

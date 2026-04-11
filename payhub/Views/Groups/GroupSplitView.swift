@@ -3,9 +3,12 @@
 //  payhub
 //
 
+import Inject
 import SwiftUI
 
 struct GroupSplitView: View {
+    @ObserveInjection var inject
+
     @StateObject private var viewModel = GroupSplitViewModel()
     private let currencyFormatter = CurrencyFormatterService()
 
@@ -41,6 +44,7 @@ struct GroupSplitView: View {
             }
             .navigationTitle("payhub")
         }
+        .enableInjection()
     }
 }
 
@@ -49,4 +53,3 @@ struct GroupSplitView_Previews: PreviewProvider {
         GroupSplitView()
     }
 }
-

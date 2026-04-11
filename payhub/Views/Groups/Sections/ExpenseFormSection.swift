@@ -3,9 +3,12 @@
 //  payhub
 //
 
+import Inject
 import SwiftUI
 
 struct ExpenseFormSection: View {
+    @ObserveInjection var inject
+
     @ObservedObject var viewModel: GroupSplitViewModel
 
     var body: some View {
@@ -28,6 +31,7 @@ struct ExpenseFormSection: View {
             .disabled(!viewModel.canAddExpense)
             .accessibilityIdentifier("expense.addButton")
         }
+        .enableInjection()
     }
 
     private var payerPicker: some View {
@@ -62,4 +66,3 @@ struct ExpenseFormSection: View {
         }
     }
 }
-
