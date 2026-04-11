@@ -116,11 +116,13 @@ final class GroupSplitViewModel: ObservableObject {
     }
 
     private var parsedExpenseAmount: Decimal? {
-        let normalizedAmount = expenseAmount
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .replacingOccurrences(of: ",", with: ".")
+        let normalizedAmount = expenseAmount.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        guard let amount = Decimal(string: normalizedAmount), amount > 0 else {
+        guard
+            !normalizedAmount.contains(","),
+            let amount = Decimal(string: normalizedAmount, locale: Locale(identifier: "en_US_POSIX")),
+            amount > 0
+        else {
             return nil
         }
 

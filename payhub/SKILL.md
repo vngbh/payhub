@@ -110,6 +110,9 @@ payhub/
 
 - Put bill-splitting logic in plain Swift services or models.
 - Avoid using floating point types for money calculations when exact decimal behavior is needed.
+- Keep money calculations in `Decimal`; do not use rounded UI values as stored or calculated data.
+- Do not show grouping separators in money UI.
+- Show money with one fractional digit in UI while keeping underlying data more precise.
 - Keep rounding rules explicit and covered by unit tests.
 - Keep settlement output deterministic so tests and UI remain stable.
 

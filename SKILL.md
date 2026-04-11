@@ -69,7 +69,10 @@ payhub/
 │           └── EmptyStateRow.swift
 ├── payhubTests/
 │   ├── Services/
+│   │   ├── CurrencyFormatterServiceTests.swift
 │   │   └── SplitCalculatorTests.swift
+│   ├── ViewModels/
+│   │   └── GroupSplitViewModelTests.swift
 │   └── SKILL.md
 └── payhubUITests/
     ├── SKILL.md

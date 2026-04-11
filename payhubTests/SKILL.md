@@ -28,7 +28,10 @@ Current structure:
 ```text
 payhubTests/
 ├── Services/
+│   ├── CurrencyFormatterServiceTests.swift
 │   └── SplitCalculatorTests.swift
+├── ViewModels/
+│   └── GroupSplitViewModelTests.swift
 └── SKILL.md
 ```
 

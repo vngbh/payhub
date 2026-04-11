@@ -12,12 +12,12 @@ struct CurrencyFormatterService {
         formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = locale
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 1
+        formatter.minimumFractionDigits = 1
+        formatter.usesGroupingSeparator = false
     }
 
     func string(from amount: Decimal) -> String {
         formatter.string(from: NSDecimalNumber(decimal: amount)) ?? "\(amount)"
     }
 }
-
