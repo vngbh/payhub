@@ -9,7 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        GroupSplitView()
+        PayhubLaunchView {
+            GroupSplitView()
+        }
     }
 }
 
@@ -18,4 +20,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-

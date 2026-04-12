@@ -46,6 +46,7 @@ payhub/
 │   ├── App/
 │   │   └── payhubApp.swift
 │   ├── Assets.xcassets/
+│   │   └── TemporaryPayhubLogo.imageset/
 │   ├── Models/
 │   │   ├── Expense.swift
 │   │   ├── Member.swift
@@ -60,6 +61,7 @@ payhub/
 │       ├── Groups/
 │       │   ├── ContentView.swift
 │       │   ├── GroupSplitView.swift
+│       │   ├── PayhubLaunchView.swift
 │       │   └── Sections/
 │       │       ├── BalancesSection.swift
 │       │       ├── ExpenseFormSection.swift
