@@ -269,6 +269,14 @@ Generated file hygiene:
 - Do not ignore source files, shared project configuration, assets, fixtures, or documentation needed by other developers.
 - If a generated file is already tracked, remove it from Git tracking in the same PR that adds the ignore rule.
 
+Xcode project file hygiene:
+
+- Treat `payhub.xcodeproj/project.pbxproj` as tracked source configuration, not a generated file to ignore or move.
+- Commit `project.pbxproj` only when the task intentionally changes Xcode configuration, such as targets, build settings, packages, resources, signing, or asset catalog wiring.
+- If `project.pbxproj` only changes because Xcode reordered sections, normalized whitespace, or rewrote equivalent content during open/build, restore that no-op diff before committing.
+- Always inspect `git diff -- payhub.xcodeproj/project.pbxproj` before staging it.
+- Do not add `payhub.xcodeproj/project.pbxproj` to `.gitignore`; `.gitignore` does not suppress changes to tracked files and ignoring this file would break shared project configuration.
+
 Branch naming:
 
 ```text
