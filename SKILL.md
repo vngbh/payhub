@@ -32,6 +32,8 @@ payhub/
 │   ├── components/
 │   │   ├── COMPONENTS.md
 │   │   └── SKILL.md
+│   ├── UI/
+│   │   └── SKILL.md
 │   └── translate/
 │       ├── SKILL.md
 │       └── TRANSLATE.md
@@ -66,7 +68,8 @@ payhub/
 │       │       ├── OverviewSection.swift
 │       │       └── SettlementsSection.swift
 │       └── Shared/
-│           └── EmptyStateRow.swift
+│           ├── EmptyStateRow.swift
+│           └── PayhubColor.swift
 ├── payhubTests/
 │   ├── Services/
 │   │   ├── CurrencyFormatterServiceTests.swift
@@ -134,6 +137,7 @@ Local skill files:
 - Root `SKILL.md`: repository-wide structure, Git, PR, commit, clean code, and path conventions.
 - `docs/SKILL.md`: documentation and instruction-file conventions.
 - `docs/components/SKILL.md`: component documentation and UI component instruction conventions.
+- `docs/UI/SKILL.md`: UI convention, design token, and color usage instructions.
 - `docs/translate/SKILL.md`: translation and localization instruction conventions.
 - `payhub/SKILL.md`: main app target conventions for SwiftUI, models, view models, services, resources, and app structure.
 - `payhubTests/SKILL.md`: unit test conventions for domain logic and service behavior.
@@ -157,6 +161,7 @@ Routing map:
 ```text
 docs/**                  -> docs/SKILL.md
 docs/components/**       -> docs/components/SKILL.md
+docs/UI/**               -> docs/UI/SKILL.md
 docs/translate/**        -> docs/translate/SKILL.md
 payhub/**                -> payhub/SKILL.md
 payhubTests/**           -> payhubTests/SKILL.md

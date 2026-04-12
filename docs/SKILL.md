@@ -15,6 +15,8 @@ docs/
 ├── components/
 │   ├── COMPONENTS.md
 │   └── SKILL.md
+├── UI/
+│   └── SKILL.md
 └── translate/
     ├── SKILL.md
     └── TRANSLATE.md
@@ -28,10 +30,10 @@ docs/
 - Update the relevant local `SKILL.md` when adding a new docs subfolder or changing how instructions should be used.
 - Keep root `SKILL.md` updated when docs structure changes.
 - Do not duplicate the same rule in many docs unless local context changes how it should be applied.
+- Put cross-app UI conventions and design-token rules under `docs/UI`.
 
 ## Naming
 
 - Use uppercase names for primary instruction files, for example `COMPONENTS.md`.
 - Use `SKILL.md` for local AI working rules inside each folder.
 - Use clear domain folders such as `components`, `translate`, `design`, `release`, or `qa` when new instruction areas appear.
-

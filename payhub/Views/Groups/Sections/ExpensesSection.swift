@@ -56,7 +56,7 @@ private struct ExpenseRow: View {
 
             Text("Paid by \(payerName)")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(PayhubColor.textSecondary)
         }
     }
 }

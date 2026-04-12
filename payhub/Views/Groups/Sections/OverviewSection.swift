@@ -17,7 +17,7 @@ struct OverviewSection: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Total Spent")
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(PayhubColor.textSecondary)
 
                 Text(currencyFormatter.string(from: totalSpent))
                     .font(.largeTitle.weight(.bold))
@@ -25,7 +25,7 @@ struct OverviewSection: View {
 
                 Text("Add members, record shared expenses, then settle up with the fewest transfers.")
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(PayhubColor.textSecondary)
             }
             .padding(.vertical, 8)
         }

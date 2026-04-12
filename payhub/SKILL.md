@@ -74,7 +74,8 @@ payhub/
     │       ├── OverviewSection.swift
     │       └── SettlementsSection.swift
     └── Shared/
-        └── EmptyStateRow.swift
+        ├── EmptyStateRow.swift
+        └── PayhubColor.swift
 ```
 
 ## Responsibilities
@@ -105,6 +106,8 @@ payhub/
 - Use `Inject` hot reload only in SwiftUI views where live UI iteration is useful.
 - Add `@ObserveInjection` and `.enableInjection()` together when instrumenting a view for hot reload.
 - Do not put hot reload hooks in models, services, or view models.
+- Use named color tokens from `Views/Shared/PayhubColor.swift` instead of direct SwiftUI colors in views.
+- Add new color tokens by semantic purpose and document recurring UI color conventions in `docs/UI/SKILL.md`.
 
 ## Business Logic Rules
 

@@ -13,7 +13,7 @@ struct EmptyStateRow: View {
 
     var body: some View {
         Text(message)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(PayhubColor.textSecondary)
             .enableInjection()
     }
 }
