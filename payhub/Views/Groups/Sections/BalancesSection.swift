@@ -37,13 +37,13 @@ private struct BalanceRow: View {
 
                 Text("Paid \(currencyFormatter.string(from: balance.paid)) • Owes \(currencyFormatter.string(from: balance.owed))")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(PayhubColor.textSecondary)
             }
 
             Spacer()
 
             Text(currencyFormatter.string(from: balance.net))
-                .foregroundStyle(balance.net >= 0 ? .green : .red)
+                .foregroundStyle(balance.net >= 0 ? PayhubColor.balancePositive : PayhubColor.balanceNegative)
                 .font(.headline)
         }
     }
