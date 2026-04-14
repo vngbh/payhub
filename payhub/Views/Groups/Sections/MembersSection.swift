@@ -13,17 +13,22 @@ struct MembersSection: View {
 
     var body: some View {
         Section("Members") {
-            HStack {
+            HStack(spacing: 12) {
                 TextField("Member name", text: $viewModel.memberName)
                     .textInputAutocapitalization(.words)
+                    .font(.body.weight(.medium))
                     .accessibilityIdentifier("members.nameField")
 
-                Button("Add") {
+                Button {
                     viewModel.addMember()
+                } label: {
+                    Text("Add")
+                        .foregroundStyle(PayhubColor.textOnAccent)
                 }
                 .buttonStyle(.borderedProminent)
                 .accessibilityIdentifier("members.addButton")
             }
+            .tint(PayhubColor.brandPrimary)
 
             ForEach(viewModel.members) { member in
                 MemberRow(
@@ -32,6 +37,8 @@ struct MembersSection: View {
                 )
             }
         }
+        .listRowBackground(PayhubColor.surfacePrimary)
+        .listRowSeparator(.hidden)
         .enableInjection()
     }
 }
@@ -41,8 +48,16 @@ private struct MemberRow: View {
     let removeMember: (Member) -> Void
 
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
+            Text(String(member.name.prefix(1)).uppercased())
+                .font(.caption.weight(.bold))
+                .foregroundStyle(PayhubColor.textOnAccent)
+                .frame(width: 28, height: 28)
+                .background(PayhubColor.brandPrimary, in: Circle())
+
             Text(member.name)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(PayhubColor.textPrimary)
 
             Spacer()
 

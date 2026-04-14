@@ -36,9 +36,9 @@ struct PayhubLaunchView<Content: View>: View {
         ZStack {
             LinearGradient(
                 colors: [
-                    PayhubColor.heroWash,
-                    PayhubColor.brandSoft.opacity(0.72),
-                    PayhubColor.heroHighlight.opacity(0.46)
+                    PayhubColor.surfacePrimary,
+                    PayhubColor.brandSoft.opacity(0.68),
+                    PayhubColor.brandBright.opacity(0.38)
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -55,7 +55,7 @@ struct PayhubLaunchView<Content: View>: View {
 
                 VStack(spacing: 6) {
                     Text("payhub")
-                        .font(.system(size: 42, weight: .bold, design: .rounded))
+                        .font(.system(size: 42, weight: .bold, design: .default))
                         .foregroundStyle(PayhubColor.textPrimary)
 
                     Text("Split cleanly. Settle calmly.")

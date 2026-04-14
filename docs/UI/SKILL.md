@@ -16,6 +16,14 @@ Use this file for UI rules that should stay consistent across the app. Follow th
 - Keep one-off system roles such as `Button(role: .destructive)` only when the role expresses behavior and accessibility, not custom styling.
 - Do not hard-code hex values in views. If a custom color is needed, add it to `Assets.xcassets` and expose it through `PayhubColor`.
 
+## Current Visual Direction
+
+- Keep payhub on a light template: use white and soft neutral row backgrounds for form, balance, expense, and settlement sections.
+- Do not introduce dark or near-black panels for regular app sections unless a future task explicitly changes the product theme.
+- Use the payhub brand green for primary app actions such as Add and Add Expense.
+- Use white text on solid brand-green controls, badges, or circular markers.
+- Use Binance-style market colors only for financial movement: green for positive amounts and red for negative amounts.
+
 ## SwiftUI Usage
 
 Use tokens directly in view modifiers:
