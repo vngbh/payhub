@@ -27,6 +27,7 @@ payhub/
 ├── .gitignore
 ├── brand/
 │   └── payhub-logo-source.svg
+├── DESIGN.md
 ├── SKILL.md
 ├── README.md
 ├── docs/

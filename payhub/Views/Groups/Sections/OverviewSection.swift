@@ -15,6 +15,21 @@ struct OverviewSection: View {
     var body: some View {
         Section {
             VStack(alignment: .leading, spacing: 18) {
+                HStack {
+                    Text("Group Wallet")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(PayhubColor.textOnAccent)
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 10)
+                        .background(PayhubColor.brandPrimary, in: Capsule())
+
+                    Spacer()
+
+                    Text("Live Split")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(PayhubColor.textTertiary)
+                }
+
                 HStack(alignment: .top, spacing: 14) {
                     Image("PayhubLogo")
                         .resizable()
@@ -35,7 +50,7 @@ struct OverviewSection: View {
                 }
 
                 Text(currencyFormatter.string(from: totalSpent))
-                    .font(.system(size: 44, weight: .bold, design: .rounded))
+                    .font(.system(size: 48, weight: .bold, design: .default))
                     .foregroundStyle(PayhubColor.textPrimary)
                     .accessibilityIdentifier("overview.totalSpent")
 
@@ -54,13 +69,15 @@ struct OverviewSection: View {
             .listRowBackground(
                 LinearGradient(
                     colors: [
-                        PayhubColor.heroWash,
-                        PayhubColor.brandSoft.opacity(0.55)
+                        PayhubColor.surfacePrimary,
+                        PayhubColor.brandSoft.opacity(0.74),
+                        PayhubColor.brandBright.opacity(0.24)
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
             )
+            .listRowSeparator(.hidden)
         }
         .enableInjection()
     }
@@ -83,6 +100,10 @@ private struct SummaryPill: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 8)
         .padding(.horizontal, 10)
-        .background(PayhubColor.iconSurface.opacity(0.62), in: RoundedRectangle(cornerRadius: 8))
+        .background(PayhubColor.iconSurface.opacity(0.76), in: RoundedRectangle(cornerRadius: 8))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(PayhubColor.borderSubtle.opacity(0.76), lineWidth: 1)
+        )
     }
 }

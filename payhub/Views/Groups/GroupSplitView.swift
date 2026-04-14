@@ -42,7 +42,11 @@ struct GroupSplitView: View {
                     currencyFormatter: currencyFormatter
                 )
             }
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .background(PayhubColor.appBackground)
             .navigationTitle("payhub")
+            .tint(PayhubColor.brandPrimary)
         }
         .enableInjection()
     }
