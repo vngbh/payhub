@@ -52,7 +52,8 @@ payhub/
 ├── App/
 │   └── payhubApp.swift
 ├── Assets.xcassets/
-│   └── TemporaryPayhubLogo.imageset/
+│   ├── AppIcon.appiconset/
+│   └── PayhubLogo.imageset/
 ├── Models/
 │   ├── Expense.swift
 │   ├── Member.swift
@@ -89,7 +90,7 @@ payhub/
 - `Services`: reusable business logic such as split calculation, persistence, formatting, export, and import.
 - `Utilities`: small generic helpers and extensions.
 - `Resources`: localization, sample data, and non-asset resources.
-- `Assets.xcassets`: app icons, colors, images, and symbol assets.
+- `Assets.xcassets`: compiled app icons, colors, images, and symbol assets used by the app at runtime.
 
 ## Structure Change Rule
 
