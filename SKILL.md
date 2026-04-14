@@ -25,6 +25,8 @@ Current structure:
 ```text
 payhub/
 ├── .gitignore
+├── brand/
+│   └── payhub-logo-source.svg
 ├── SKILL.md
 ├── README.md
 ├── docs/
@@ -46,7 +48,8 @@ payhub/
 │   ├── App/
 │   │   └── payhubApp.swift
 │   ├── Assets.xcassets/
-│   │   └── TemporaryPayhubLogo.imageset/
+│   │   ├── AppIcon.appiconset/
+│   │   └── PayhubLogo.imageset/
 │   ├── Models/
 │   │   ├── Expense.swift
 │   │   ├── Member.swift
@@ -180,8 +183,9 @@ Folder responsibilities:
 - `ViewModels`: screen state, user actions, validation, and coordination between views and services.
 - `Services`: reusable business logic, persistence, formatting, import/export, and system integrations.
 - `Utilities`: small generic helpers and extensions that are not specific to one feature.
+- `brand`: source brand files used to generate app icons and image assets; keep runtime app assets in `payhub/Assets.xcassets`.
 - `Resources`: localization, static data, and non-asset resource files.
-- `Assets.xcassets`: colors, icons, images, and app icon assets.
+- `Assets.xcassets`: compiled colors, icons, images, and app icon assets used by the app at runtime.
 
 Structure change rule:
 

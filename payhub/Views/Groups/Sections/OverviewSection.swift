@@ -16,9 +16,9 @@ struct OverviewSection: View {
         Section {
             VStack(alignment: .leading, spacing: 18) {
                 HStack(alignment: .top, spacing: 14) {
-                    Image("TemporaryPayhubLogo")
+                    Image("PayhubLogo")
                         .resizable()
-                        .scaledToFill()
+                        .scaledToFit()
                         .frame(width: 64, height: 64)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .shadow(color: PayhubColor.brandPrimary.opacity(0.18), radius: 10, x: 0, y: 6)

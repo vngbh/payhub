@@ -46,9 +46,9 @@ struct PayhubLaunchView<Content: View>: View {
             .ignoresSafeArea()
 
             VStack(spacing: 16) {
-                Image("TemporaryPayhubLogo")
+                Image("PayhubLogo")
                     .resizable()
-                    .scaledToFill()
+                    .scaledToFit()
                     .frame(width: 138, height: 138)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .shadow(color: PayhubColor.brandPrimary.opacity(0.22), radius: 18, x: 0, y: 12)
