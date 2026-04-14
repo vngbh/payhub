@@ -33,6 +33,7 @@ struct ExpensesSection: View {
                 }
             }
         }
+        .listRowBackground(PayhubColor.surfacePrimary)
         .enableInjection()
     }
 }
@@ -43,20 +44,24 @@ private struct ExpenseRow: View {
     let payerName: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text(expense.title)
-                    .font(.headline)
+                    .font(.headline.weight(.semibold))
+                    .foregroundStyle(PayhubColor.textPrimary)
 
                 Spacer()
 
                 Text(currencyFormatter.string(from: expense.amount))
-                    .font(.headline)
+                    .font(.headline.weight(.bold))
+                    .monospacedDigit()
+                    .foregroundStyle(PayhubColor.textPrimary)
             }
 
             Text("Paid by \(payerName)")
-                .font(.subheadline)
-                .foregroundStyle(PayhubColor.textSecondary)
+                .font(.caption.weight(.medium))
+                .foregroundStyle(PayhubColor.textTertiary)
         }
+        .padding(.vertical, 4)
     }
 }
