@@ -18,6 +18,13 @@ Use English across the entire project:
 - Put translations in localization resources or files under `docs/translate`; do not mix languages inside source files or general project documentation.
 - If a task finds Vietnamese or any other non-English project text outside an explicit localization context, propose converting it to English in the same PR.
 
+## Documentation Style Rule
+
+- All documentation, including `README.md`, must be written in a clear, professional, and concise style.
+- Do **not** use emojis or decorative icons in documentation, commit messages, PR titles, or descriptions.
+- Always follow the conventions and structure defined in `SKILL.md` when updating or creating documentation.
+- Before opening a PR, ensure that all documentation changes comply with the latest `SKILL.md` rules.
+
 ## Project Structure
 
 Current structure:
@@ -319,6 +326,8 @@ git switch -c feature/short-task-name
 
 If there is no remote yet, skip `git pull --ff-only` until `origin` is configured.
 
+Before opening a PR, verify that the task branch name still matches the naming patterns above. If the branch name is wrong, rename it before pushing or opening the PR.
+
 ## Multi-PR Workflow
 
 When several branches or PRs are created in one work session, keep the flow simple and predictable.
@@ -438,13 +447,15 @@ PR body format:
 
 ```markdown
 ## Summary
+
 Short explanation of what changed and why.
 
 ## Details
-+ Added ...
-+ Updated ...
-+ Fixed ...
-+ Tested ...
+
+- Added ...
+- Updated ...
+- Fixed ...
+- Tested ...
 ```
 
 Rules:
@@ -463,6 +474,13 @@ Merge method:
 - Only use squash merge or rebase merge if the user explicitly asks for that specific merge method.
 
 ## Pre-PR Checklist
+
+Before opening a PR:
+
+- Re-read the root `SKILL.md` and every local `SKILL.md` for touched folders.
+- Confirm the current branch follows the branch naming convention.
+- Confirm documentation is clear, concise, professional, and emoji-free.
+- Confirm commits, PR title, and PR body follow this file.
 
 Run these before opening a PR when Xcode is configured:
 
