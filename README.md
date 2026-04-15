@@ -1,48 +1,42 @@
 # payhub
 
-payhub is an iOS app for splitting shared expenses after meals, hangouts, short trips, or any group activity. The product goal is to make it fast to record who paid, who participated, and who should transfer money to whom with the fewest settlement transactions possible.
+payhub is an iOS app for splitting shared expenses after meals, hangouts, trips, and other group activities. It helps record who paid, who participated, and which settlement transfers are needed.
 
-## Current Status
+## Project Status
 
-- Platform: iOS / iPadOS
+- Platform: iOS and iPadOS
 - UI framework: SwiftUI
-- Project: Xcode project (`payhub.xcodeproj`)
+- Project file: `payhub.xcodeproj`
 - App target: `payhub`
 - Unit test target: `payhubTests`
 - UI test target: `payhubUITests`
 - Bundle ID: `com.vngbh.payhub`
-- Current version: `1.0` build `1`
-- Current iOS deployment target: `26.2`
+- Version: `1.0` build `1`
+- iOS deployment target: `26.2`
 
-## Environment Requirements
+## Requirements
 
-- macOS with the full Xcode app installed, not only Command Line Tools.
-- An Xcode version that supports the project's iOS deployment target.
+- macOS with the full Xcode app installed.
+- An Xcode version that supports the configured iOS deployment target.
 - iOS Simulator installed through Xcode.
-- An Apple Developer account if you want to build for a real device, TestFlight, or App Store release.
+- Apple Developer account for real-device, TestFlight, or App Store builds.
 
-Check the active toolchain:
+Check the active developer tools:
 
 ```sh
 xcode-select -p
 xcodebuild -version
 ```
 
-If `xcodebuild` reports an error like `tool 'xcodebuild' requires Xcode, but active developer directory ... is a command line tools instance`, switch the active developer directory to Xcode:
+If `xcodebuild` points to Command Line Tools instead of Xcode, switch to Xcode:
 
 ```sh
 sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 ```
 
-Then verify again:
-
-```sh
-xcodebuild -version
-```
-
 ## Open The Project
 
-Open the project in Xcode:
+Open the Xcode project:
 
 ```sh
 open payhub.xcodeproj
@@ -51,13 +45,13 @@ open payhub.xcodeproj
 In Xcode:
 
 1. Select the `payhub` scheme.
-2. Select an available simulator, for example `iPhone 17`.
-3. Press `Cmd + R` to build and run the app.
+2. Select an available iOS simulator.
+3. Press `Cmd + R` to build and run.
 4. Press `Cmd + U` to run tests.
 
 ## Common Commands
 
-List schemes, targets, and configurations:
+List project schemes, targets, and configurations:
 
 ```sh
 xcodebuild -list -project payhub.xcodeproj
@@ -67,12 +61,6 @@ List available simulators:
 
 ```sh
 xcrun simctl list devices available
-```
-
-Open Simulator:
-
-```sh
-open -a Simulator
 ```
 
 Build Debug for iOS Simulator:
@@ -86,7 +74,7 @@ xcodebuild \
   build
 ```
 
-Run unit tests and UI tests on a simulator:
+Run tests on a simulator:
 
 ```sh
 xcodebuild \
@@ -97,21 +85,19 @@ xcodebuild \
   test
 ```
 
-If `iPhone 17` is not available on your machine, replace it with a simulator name from:
+If `iPhone 17` is unavailable, choose a simulator from:
 
 ```sh
 xcrun simctl list devices available
 ```
 
-Remove project-specific DerivedData when a build cache issue appears:
+Remove project-specific DerivedData when build cache issues appear:
 
 ```sh
 rm -rf ~/Library/Developer/Xcode/DerivedData/payhub-*
 ```
 
-## Run On Simulator From Command Line
-
-The simplest path is Xcode with `Cmd + R`. For automation, build the app and install it into a booted simulator.
+## Run From Command Line
 
 Boot a simulator:
 
@@ -120,7 +106,7 @@ xcrun simctl boot 'iPhone 17'
 open -a Simulator
 ```
 
-Build the app into a dedicated derived data folder:
+Build into a dedicated derived data folder:
 
 ```sh
 xcodebuild \
@@ -149,35 +135,78 @@ Install InjectionIII:
 brew install --cask injectioniii
 ```
 
-Or install it from the Mac App Store, then open InjectionIII from `/Applications`.
-
 Use hot reload:
 
-1. Open InjectionIII and select the repository folder when prompted.
-2. Open the project in Xcode:
+1. Open InjectionIII and select the repository folder.
+2. Open `payhub.xcodeproj` in Xcode.
+3. Run the `payhub` scheme on a simulator.
+4. Edit a SwiftUI view that uses `@ObserveInjection` and `.enableInjection()`.
+5. Save the file to inject the updated implementation into the running Debug app.
 
-```sh
-open payhub.xcodeproj
-```
-
-3. Select the `payhub` scheme and run the app on a simulator with `Cmd + R`.
-4. Edit a SwiftUI view that is instrumented with `@ObserveInjection` and `.enableInjection()`.
-5. Save the file. InjectionIII recompiles and injects the changed implementation into the running Debug app.
-
-Hot reload is for fast UI iteration only. Run a normal build and relevant tests before opening a PR.
+Hot reload is only for local UI iteration. Run a normal build and relevant tests before opening a PR.
 
 ## Development Workflow
 
-Each development loop should stay small:
+Before starting any task, read the root `SKILL.md` and any local `SKILL.md` files for the folders you will touch. Follow those rules for documentation, code style, branch naming, commits, and pull requests.
 
-1. Pick one focused task, such as `add expense form`, `calculate balances`, or `store members locally`.
-2. Update the code.
-3. Build on a simulator.
-4. Run relevant tests.
-5. Manually test the main flow on a simulator.
-6. Commit when the app builds and the behavior is stable.
+Every task must be completed on its own branch. Do not commit task work directly on `main`.
 
-Run this before opening a PR when Xcode is configured:
+Start from the latest `main`:
+
+```sh
+git status --short --branch
+git switch main
+git pull --ff-only
+git switch -c docs/short-doc-name
+```
+
+Use the branch prefix that matches the task:
+
+```text
+feature/short-task-name
+fix/short-bug-name
+docs/short-doc-name
+refactor/short-refactor-name
+test/short-test-name
+chore/short-maintenance-name
+ci/short-ci-name
+build/short-build-name
+```
+
+Keep each change focused:
+
+1. Pick one task.
+2. Read the relevant skill files.
+3. Implement the change.
+4. Build or test the affected area.
+5. Check the diff.
+6. Commit with the project commit convention.
+7. Open a PR before merging to `main`.
+
+Suggested commit format:
+
+```text
+type(scope): message
+```
+
+Example:
+
+```sh
+git add README.md SKILL.md
+git commit -m "docs(readme): update project guide"
+```
+
+## Pull Requests
+
+Before opening a PR:
+
+1. Confirm the branch name follows `SKILL.md`.
+2. Re-read the root `SKILL.md` and any local skill files for touched folders.
+3. Confirm documentation is clear, concise, professional, and emoji-free.
+4. Run relevant build or test commands.
+5. Review the final diff.
+
+Recommended test command when Xcode is configured:
 
 ```sh
 xcodebuild \
@@ -188,59 +217,84 @@ xcodebuild \
   test
 ```
 
-Suggested commit flow:
+Review changes before committing:
 
 ```sh
-git status
-git add .
-git commit -m "feat(expenses): add expense form"
+git status --short --branch
+git diff
 ```
 
-## Architecture Direction
+PR title format:
 
-As the app grows, keep code organized around these areas:
+```text
+[Edited Place] Content Here
+```
 
-- `Models`: core data such as group, member, expense, and settlement result.
-- `Views`: SwiftUI screens and components.
-- `ViewModels`: screen state and action coordination.
-- `Services`: split calculation, persistence, formatting, import, and export.
-- `Tests`: coverage for domain logic and important user flows.
+PR body format:
 
-Bill-splitting logic should live in plain Swift models or services so it can be unit tested. Avoid spreading calculation rules across SwiftUI views.
+```markdown
+## Summary
 
-## MVP Checklist
+Short explanation of what changed and why.
+
+## Details
+
+- Added ...
+- Updated ...
+- Fixed ...
+- Tested ...
+```
+
+Use a normal merge commit when merging PRs into `main`, unless the user explicitly asks for another merge method.
+
+## Architecture
+
+Keep app code organized by responsibility:
+
+- `App`: app entry point and root scene wiring.
+- `Models`: plain Swift domain data.
+- `Views`: SwiftUI screens and reusable components.
+- `ViewModels`: screen state, user actions, and coordination.
+- `Services`: calculation, persistence, formatting, import, export, and integrations.
+- `Utilities`: small generic helpers and extensions.
+- `Resources`: localization and static non-asset resources.
+- `Assets.xcassets`: runtime colors, icons, images, and app icons.
+
+Bill-splitting logic should live in models or services so it can be unit tested. Avoid placing business rules inside SwiftUI views.
+
+## MVP Scope
 
 - Create a group.
 - Add members.
 - Add an expense with title, amount, payer, and participants.
 - Calculate how much each person paid.
-- Calculate how much each person should owe.
+- Calculate how much each person owes.
 - Suggest the minimum settlement transactions.
 - Edit or delete expenses.
 - Save data locally.
 - Share the settlement summary.
 
-## Test Coverage
+## Testing Focus
 
 Prioritize unit tests for:
 
-- All members splitting one expense evenly.
-- One person paying multiple expenses for the group.
-- One expense involving only some members.
+- Even splits across all members.
+- One person paying multiple expenses.
+- Expenses involving only some members.
 - Decimal amounts and rounding behavior.
-- Total money received matching total money owed.
-- No settlement transactions when everyone is already balanced.
+- Total received matching total owed.
+- No settlements when everyone is balanced.
 
 Prioritize UI tests for:
 
-- App launches successfully.
-- A new group can be created.
-- A new expense can be added.
-- The settlement result can be viewed.
+- App launch.
+- Group creation.
+- Expense creation.
+- Settlement result review.
 
-## Build Release
+## Release Build
 
-Build Release for simulator to catch compile issues:
+Build Release for iOS Simulator:
 
 ```sh
 xcodebuild \
@@ -251,7 +305,7 @@ xcodebuild \
   build
 ```
 
-Archive for TestFlight or App Store upload:
+Archive for distribution:
 
 ```sh
 xcodebuild \
@@ -263,7 +317,7 @@ xcodebuild \
   archive
 ```
 
-Exporting an archive requires an `ExportOptions.plist` that matches the distribution method, such as `development`, `ad-hoc`, `app-store-connect`, or `enterprise`. This project does not have that file yet; create it when TestFlight or App Store distribution begins.
+Exporting an archive requires an `ExportOptions.plist` that matches the distribution method. Add it when TestFlight or App Store distribution begins.
 
 ```sh
 xcodebuild \
@@ -276,14 +330,15 @@ xcodebuild \
 ## Pre-TestFlight Checklist
 
 - Update `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`.
-- Make sure the bundle ID matches the Apple Developer portal.
+- Confirm the bundle ID matches the Apple Developer portal.
 - Configure the signing team in Xcode.
 - Add complete app icons.
 - Check the launch screen.
 - Run unit tests and UI tests.
-- Test on at least one iPhone simulator and one iPad simulator if iPad remains supported.
+- Test on at least one iPhone simulator.
+- Test on at least one iPad simulator if iPad remains supported.
 - Test on a real device when available.
-- Write build notes that include new features, known issues, and flows to test.
+- Write build notes with new features, known issues, and flows to test.
 
 ## Troubleshooting
 
@@ -307,10 +362,3 @@ xcrun simctl erase booted
 ```
 
 If `xcrun simctl erase booted` fails because no simulator is booted, boot a simulator first or erase a specific device ID from the simulator list.
-
-Check Git before committing:
-
-```sh
-git status --short
-git diff
-```
