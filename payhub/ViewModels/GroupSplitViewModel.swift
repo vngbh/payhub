@@ -29,7 +29,7 @@ final class GroupSplitViewModel: ObservableObject {
         selectedParticipantIDs = Set(self.members.map(\.id))
     }
 
-    var canAddExpense: Bool {
+    var canSubmitExpense: Bool {
         !expenseTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             && parsedExpenseAmount != nil
             && selectedPayerID != nil
@@ -83,7 +83,7 @@ final class GroupSplitViewModel: ObservableObject {
         }
     }
 
-    func addExpense() {
+    func submitExpense() {
         let trimmedTitle = expenseTitle.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard
@@ -102,9 +102,35 @@ final class GroupSplitViewModel: ObservableObject {
             participantIDs: selectedParticipantIDs
         ))
 
-        expenseTitle = ""
-        expenseAmount = ""
-        selectedParticipantIDs = Set(members.map(\.id))
+        resetExpenseForm()
+    }
+
+    func updateExpense(
+        _ expense: Expense,
+        title: String,
+        amountText: String,
+        payerID: UUID?,
+        participantIDs: Set<UUID>
+    ) {
+        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let normalizedAmount = amountText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard
+            let payerID,
+            !participantIDs.isEmpty,
+            !trimmedTitle.isEmpty,
+            !normalizedAmount.contains(","),
+            let amount = Decimal(string: normalizedAmount, locale: Locale(identifier: "en_US_POSIX")),
+            amount > 0,
+            let expenseIndex = expenses.firstIndex(where: { $0.id == expense.id })
+        else {
+            return
+        }
+
+        expenses[expenseIndex].title = trimmedTitle
+        expenses[expenseIndex].amount = amount
+        expenses[expenseIndex].payerID = payerID
+        expenses[expenseIndex].participantIDs = participantIDs
     }
 
     func removeExpense(_ expense: Expense) {
@@ -127,6 +153,13 @@ final class GroupSplitViewModel: ObservableObject {
         }
 
         return amount
+    }
+
+    private func resetExpenseForm() {
+        expenseTitle = ""
+        expenseAmount = ""
+        selectedPayerID = members.first?.id
+        selectedParticipantIDs = Set(members.map(\.id))
     }
 
     private static let sampleMembers = [
