@@ -12,7 +12,7 @@ payhub is an iOS app for splitting shared expenses after meals, hangouts, trips,
 - UI test target: `payhubUITests`
 - Bundle ID: `com.vngbh.payhub`
 - Version: `1.0` build `1`
-- iOS deployment target: `26.2`
+- iOS deployment target: `18.0`
 
 ## Requirements
 

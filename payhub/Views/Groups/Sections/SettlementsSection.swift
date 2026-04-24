@@ -17,16 +17,34 @@ struct SettlementsSection: View {
         Section("Settle Up") {
             if settlements.isEmpty {
                 EmptyStateRow(message: hasExpenses ? "Everyone is settled." : "Add expenses to see settlements.")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .fill(PayhubColor.surfacePrimary)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
+                    )
+                    .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
             } else {
                 ForEach(settlements) { settlement in
                     SettlementRow(
                         settlement: settlement,
                         currencyFormatter: currencyFormatter
                     )
+                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
                 }
             }
         }
-        .listRowBackground(PayhubColor.surfacePrimary)
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
         .enableInjection()
     }
 }
@@ -60,6 +78,16 @@ private struct SettlementRow: View {
                 .monospacedDigit()
                 .foregroundStyle(PayhubColor.textPrimary)
         }
-        .padding(.vertical, 4)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(PayhubColor.surfacePrimary)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
+        )
+        .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
     }
 }

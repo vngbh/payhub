@@ -29,15 +29,32 @@ struct MembersSection: View {
                 .accessibilityIdentifier("members.addButton")
             }
             .tint(PayhubColor.brandPrimary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(PayhubColor.surfacePrimary)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
+            )
+            .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
+            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
 
             ForEach(viewModel.members) { member in
                 MemberRow(
                     member: member,
                     removeMember: viewModel.removeMember(_:)
                 )
+                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
             }
         }
-        .listRowBackground(PayhubColor.surfacePrimary)
+        .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
         .enableInjection()
     }
@@ -61,12 +78,26 @@ private struct MemberRow: View {
 
             Spacer()
 
-            Button(role: .destructive) {
-                removeMember(member)
-            } label: {
-                Image(systemName: "trash")
-            }
+            Image(systemName: "trash")
+                .foregroundStyle(PayhubColor.balanceNegative)
+                .frame(width: 32, height: 32)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    removeMember(member)
+                }
+                .accessibilityAddTraits(.isButton)
             .accessibilityLabel("Remove \(member.name)")
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(PayhubColor.surfacePrimary)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
+        )
+        .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
     }
 }
