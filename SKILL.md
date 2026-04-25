@@ -59,7 +59,7 @@ payhub/
 │   │   ├── AppIcon.appiconset/
 │   │   └── PayhubLogo.imageset/
 │   ├── Models/
-│   │   ├── Expense.swift
+│   │   ├── Bill.swift
 │   │   ├── Member.swift
 │   │   └── Settlement.swift
 │   ├── Services/
@@ -75,8 +75,8 @@ payhub/
 │       │   ├── PayhubLaunchView.swift
 │       │   └── Sections/
 │       │       ├── BalancesSection.swift
-│       │       ├── ExpenseFormSection.swift
-│       │       ├── ExpensesSection.swift
+│       │       ├── BillFormSection.swift
+│       │       ├── BillsSection.swift
 │       │       ├── MembersSection.swift
 │       │       ├── OverviewSection.swift
 │       │       └── SettlementsSection.swift
@@ -122,17 +122,17 @@ payhub/
 │   └── payhubApp.swift
 ├── Models/
 │   ├── Member.swift
-│   ├── Expense.swift
+│   ├── Bill.swift
 │   ├── Group.swift
 │   └── Settlement.swift
 ├── Views/
 │   ├── Groups/
-│   ├── Expenses/
+│   ├── Bills/
 │   ├── Settlement/
 │   └── Shared/
 ├── ViewModels/
 │   ├── GroupsViewModel.swift
-│   ├── ExpenseFormViewModel.swift
+│   ├── BillFormViewModel.swift
 │   └── SettlementViewModel.swift
 ├── Services/
 │   ├── SplitCalculator.swift
@@ -305,7 +305,7 @@ build/short-build-name
 Examples:
 
 ```text
-feature/add-expense-form
+feature/add-bill-form
 fix/rounding-split-total
 docs/update-launch-process
 refactor/extract-split-service
@@ -408,7 +408,7 @@ Allowed types:
 Examples:
 
 ```text
-feat(expenses): add participant picker
+feat(bills): add participant picker
 fix(split): handle rounding remainder
 docs(skill): add routing convention
 style(summary): polish balance color
@@ -440,7 +440,7 @@ Examples:
 ```text
 [README] Add Build And Launch Process
 [SplitService] Add Settlement Calculation
-[ExpenseForm] Add Participant Selection
+[BillForm] Add Participant Selection
 ```
 
 PR body format:

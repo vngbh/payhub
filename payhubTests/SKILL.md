@@ -41,7 +41,7 @@ Prioritize tests for:
 
 - Even split across all members.
 - Split where only some members participate.
-- Multiple expenses paid by different people.
+- Multiple bills paid by different people.
 - Rounding and decimal edge cases.
 - Settlement minimization: who pays whom and how much.
 - Persistence behavior when storage is introduced.

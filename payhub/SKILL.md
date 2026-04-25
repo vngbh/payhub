@@ -20,17 +20,17 @@ payhub/
 │   └── payhubApp.swift
 ├── Models/
 │   ├── Member.swift
-│   ├── Expense.swift
+│   ├── Bill.swift
 │   ├── Group.swift
 │   └── Settlement.swift
 ├── Views/
 │   ├── Groups/
-│   ├── Expenses/
+│   ├── Bills/
 │   ├── Settlement/
 │   └── Shared/
 ├── ViewModels/
 │   ├── GroupsViewModel.swift
-│   ├── ExpenseFormViewModel.swift
+│   ├── BillFormViewModel.swift
 │   └── SettlementViewModel.swift
 ├── Services/
 │   ├── SplitCalculator.swift
@@ -55,7 +55,7 @@ payhub/
 │   ├── AppIcon.appiconset/
 │   └── PayhubLogo.imageset/
 ├── Models/
-│   ├── Expense.swift
+│   ├── Bill.swift
 │   ├── Member.swift
 │   └── Settlement.swift
 ├── Services/
@@ -71,8 +71,8 @@ payhub/
     │   ├── PayhubLaunchView.swift
     │   └── Sections/
     │       ├── BalancesSection.swift
-    │       ├── ExpenseFormSection.swift
-    │       ├── ExpensesSection.swift
+    │       ├── BillFormSection.swift
+    │       ├── BillsSection.swift
     │       ├── MembersSection.swift
     │       ├── OverviewSection.swift
     │       └── SettlementsSection.swift
@@ -84,7 +84,7 @@ payhub/
 ## Responsibilities
 
 - `App`: app entry point, root scene wiring, app-level dependency setup.
-- `Models`: plain Swift domain data, such as members, expenses, groups, balances, and settlements.
+- `Models`: plain Swift domain data, such as members, bills, groups, balances, and settlements.
 - `Views`: SwiftUI screens and reusable UI components.
 - `ViewModels`: screen state, validation, actions, and coordination between views and services.
 - `Services`: reusable business logic such as split calculation, persistence, formatting, export, and import.

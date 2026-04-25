@@ -1,11 +1,11 @@
 //
-//  Expense.swift
+//  Bill.swift
 //  payhub
 //
 
 import Foundation
 
-struct Expense: Identifiable, Hashable {
+struct Bill: Identifiable, Hashable {
     let id: UUID
     var title: String
     var amount: Decimal
@@ -26,4 +26,3 @@ struct Expense: Identifiable, Hashable {
         self.participantIDs = participantIDs
     }
 }
-
