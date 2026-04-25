@@ -63,7 +63,7 @@ struct OverviewSection: View {
                     SummaryPill(title: "Settle", value: "Pay")
                 }
 
-                Text("Add members, record shared expenses, then settle up with the fewest transfers.")
+                Text("Add members, record shared bills, then calculate the minimum transfers.")
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(.white.opacity(0.65))
             }

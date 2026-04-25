@@ -22,12 +22,12 @@ struct ContentView: View {
 // MARK: - Tab
 
 enum AppTab: CaseIterable {
-    case home, expenses, balances, profile
+    case home, bills, balances, profile
 
     var label: String {
         switch self {
         case .home:     return "Home"
-        case .expenses: return "Expenses"
+        case .bills:    return "Bills"
         case .balances: return "Balances"
         case .profile:  return "Profile"
         }
@@ -36,7 +36,7 @@ enum AppTab: CaseIterable {
     var icon: String {
         switch self {
         case .home:     return "house.fill"
-        case .expenses: return "clock.fill"
+        case .bills:    return "clock.fill"
         case .balances: return "chart.pie.fill"
         case .profile:  return "person.fill"
         }
@@ -49,8 +49,8 @@ struct RootView: View {
     @ObserveInjection var inject
     @EnvironmentObject var viewModel: GroupSplitViewModel
     @State private var selectedTab: AppTab = .home
-    @State private var isAddingExpense  = false
-    @State private var isShowingSettle  = false
+    @State private var isAddingBill    = false
+    @State private var isCalculating   = false
     @State private var isShowingMembers = false
 
     var body: some View {
@@ -59,12 +59,12 @@ struct RootView: View {
                 switch selectedTab {
                 case .home:
                     GroupSplitView(
-                        onAddExpense:  { isAddingExpense  = true },
-                        onSettleUp:    { isShowingSettle  = true },
+                        onAddBill:     { isAddingBill    = true },
+                        onCalculate:   { isCalculating   = true },
                         onViewMembers: { isShowingMembers = true }
                     )
-                case .expenses:
-                    ExpensesView(onAddExpense: { isAddingExpense = true })
+                case .bills:
+                    BillsView(onAddBill: { isAddingBill = true })
                 case .balances:
                     BalancesView()
                 case .profile:
@@ -76,11 +76,11 @@ struct RootView: View {
             BottomNavBar(selected: $selectedTab)
         }
         .ignoresSafeArea(edges: .bottom)
-        .sheet(isPresented: $isAddingExpense) {
-            AddExpenseView()
+        .sheet(isPresented: $isAddingBill) {
+            AddBillView()
                 .environmentObject(viewModel)
         }
-        .sheet(isPresented: $isShowingSettle) {
+        .sheet(isPresented: $isCalculating) {
             SettlementsView()
                 .environmentObject(viewModel)
         }

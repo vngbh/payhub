@@ -10,8 +10,8 @@ struct GroupSplitView: View {
     @ObserveInjection var inject
     @EnvironmentObject var viewModel: GroupSplitViewModel
 
-    let onAddExpense:  () -> Void
-    let onSettleUp:    () -> Void
+    let onAddBill:     () -> Void
+    let onCalculate:   () -> Void
     let onViewMembers: () -> Void
 
     private let fmt = CurrencyFormatterService()
@@ -23,7 +23,7 @@ struct GroupSplitView: View {
                 VStack(alignment: .leading, spacing: 22) {
                     quickActions
                     membersRow
-                    recentExpenses
+                    recentBills
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
@@ -44,7 +44,7 @@ struct GroupSplitView: View {
                     Text("Hey, group 👋")
                         .font(.system(size: 22, weight: .heavy))
                         .foregroundStyle(PayhubColor.textPrimary)
-                    Text("Manage shared expenses")
+                    Text("Manage shared bills")
                         .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(PayhubColor.textSecondary)
                 }
@@ -88,9 +88,9 @@ struct GroupSplitView: View {
                 .padding(.bottom, 16)
 
             HStack(spacing: 10) {
-                HeroPill(value: "\(viewModel.members.count)",     label: "Members")
-                HeroPill(value: "\(viewModel.expenses.count)",    label: "Expenses")
-                HeroPill(value: "\(viewModel.settlements.count)", label: "Pending")
+                HeroPill(value: "\(viewModel.members.count)",      label: "Members")
+                HeroPill(value: "\(viewModel.bills.count)",        label: "Bills")
+                HeroPill(value: "\(viewModel.settlements.count)",  label: "Pending")
             }
         }
         .padding(.vertical, 20)
@@ -109,11 +109,11 @@ struct GroupSplitView: View {
 
     private var quickActions: some View {
         HStack(spacing: 10) {
-            Button(action: onAddExpense) {
+            Button(action: onAddBill) {
                 HStack(spacing: 8) {
                     Image(systemName: "plus")
                         .font(.system(size: 14, weight: .bold))
-                    Text("Add Expense")
+                    Text("Add Bill")
                         .font(.system(size: 14, weight: .bold))
                 }
                 .foregroundStyle(.white)
@@ -123,11 +123,11 @@ struct GroupSplitView: View {
             }
             .buttonStyle(.plain)
 
-            Button(action: onSettleUp) {
+            Button(action: onCalculate) {
                 HStack(spacing: 8) {
                     Image(systemName: "arrow.left.arrow.right")
                         .font(.system(size: 14, weight: .bold))
-                    Text("Settle Up")
+                    Text("Calculate")
                         .font(.system(size: 14, weight: .bold))
                 }
                 .foregroundStyle(PayhubColor.textPrimary)
@@ -179,22 +179,22 @@ struct GroupSplitView: View {
         }
     }
 
-    // MARK: Recent Expenses
+    // MARK: Recent Bills
 
-    private var recentExpenses: some View {
+    private var recentBills: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Recent Expenses")
+            Text("Recent Bills")
                 .font(.system(size: 16, weight: .bold))
                 .foregroundStyle(PayhubColor.textPrimary)
 
-            if viewModel.expenses.isEmpty {
+            if viewModel.bills.isEmpty {
                 HStack {
                     Spacer()
                     VStack(spacing: 8) {
                         Image(systemName: "doc.text")
                             .font(.system(size: 28, weight: .light))
                             .foregroundStyle(PayhubColor.textSecondary)
-                        Text("No expenses yet")
+                        Text("No bills yet")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(PayhubColor.textSecondary)
                     }
@@ -206,10 +206,10 @@ struct GroupSplitView: View {
                         .stroke(PayhubColor.borderSubtle, style: StrokeStyle(lineWidth: 1.5, dash: [6, 4]))
                 )
             } else {
-                ForEach(viewModel.expenses.suffix(3).reversed()) { expense in
-                    RecentExpenseCard(
-                        expense: expense,
-                        payerName: viewModel.memberName(for: expense.payerID),
+                ForEach(viewModel.bills.suffix(3).reversed()) { bill in
+                    RecentBillCard(
+                        bill: bill,
+                        payerName: viewModel.memberName(for: bill.payerID),
                         fmt: fmt
                     )
                 }
@@ -269,8 +269,8 @@ private struct MemberChip: View {
     }
 }
 
-private struct RecentExpenseCard: View {
-    let expense: Expense
+private struct RecentBillCard: View {
+    let bill: Bill
     let payerName: String
     let fmt: CurrencyFormatterService
 
@@ -286,7 +286,7 @@ private struct RecentExpenseCard: View {
                 )
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(expense.title)
+                Text(bill.title)
                     .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(PayhubColor.textPrimary)
                 Text("Paid by \(payerName)")
@@ -296,7 +296,7 @@ private struct RecentExpenseCard: View {
 
             Spacer()
 
-            Text(fmt.string(from: expense.amount))
+            Text(fmt.string(from: bill.amount))
                 .font(.system(size: 15, weight: .heavy))
                 .foregroundStyle(PayhubColor.textPrimary)
                 .monospacedDigit()
@@ -314,6 +314,6 @@ private struct RecentExpenseCard: View {
 }
 
 #Preview {
-    GroupSplitView(onAddExpense: {}, onSettleUp: {}, onViewMembers: {})
+    GroupSplitView(onAddBill: {}, onCalculate: {}, onViewMembers: {})
         .environmentObject(GroupSplitViewModel())
 }

@@ -30,7 +30,7 @@ Use `@Binding` only when the component truly edits parent state. Use callbacks f
 
 ## Placement
 
-- Feature-specific components live near their feature folder, for example `payhub/Views/Expenses/`.
+- Feature-specific components live near their feature folder, for example `payhub/Views/Bills/`.
 - Shared components live in `payhub/Views/Shared/`.
 - Do not move a component into `Shared` until at least two features need it or reuse is clearly imminent.
 
@@ -38,7 +38,7 @@ Use `@Binding` only when the component truly edits parent state. Use callbacks f
 
 - Add accessibility labels for non-text controls.
 - Add stable accessibility identifiers for controls used by UI tests.
-- Keep identifiers semantic, for example `expenseForm.amountField`.
+- Keep identifiers semantic, for example `bill.amountField`.
 
 ## Review Checklist
 
