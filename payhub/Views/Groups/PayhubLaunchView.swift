@@ -3,9 +3,11 @@
 //  payhub
 //
 
+import Inject
 import SwiftUI
 
 struct PayhubLaunchView<Content: View>: View {
+    @ObserveInjection var inject
     @State private var showLogo = false
     @State private var showContent = false
     @State private var overlayOpacity = 1.0
@@ -30,37 +32,39 @@ struct PayhubLaunchView<Content: View>: View {
             }
         }
         .onAppear(perform: startLaunchSequence)
+        .enableInjection()
     }
 
     private var launchOverlay: some View {
         ZStack {
             LinearGradient(
                 colors: [
-                    PayhubColor.surfacePrimary,
-                    PayhubColor.brandSoft.opacity(0.68),
-                    PayhubColor.brandBright.opacity(0.38)
+                    Color(red: 21/255, green: 101/255, blue: 216/255),
+                    Color(red: 10/255, green: 36/255, blue: 99/255)
                 ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                startPoint: UnitPoint(x: 0.1, y: 0),
+                endPoint: UnitPoint(x: 0.9, y: 1)
             )
             .ignoresSafeArea()
 
-            VStack(spacing: 16) {
-                Image("PayhubLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 138, height: 138)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .shadow(color: PayhubColor.brandPrimary.opacity(0.22), radius: 18, x: 0, y: 12)
+            VStack(spacing: 20) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.white.opacity(0.15))
+                        .frame(width: 72, height: 72)
+                    Image(systemName: "wallet.bifold.fill")
+                        .font(.system(size: 30, weight: .semibold))
+                        .foregroundStyle(.white)
+                }
 
-                VStack(spacing: 6) {
+                VStack(spacing: 8) {
                     Text("payhub")
-                        .font(.system(size: 42, weight: .bold, design: .default))
-                        .foregroundStyle(PayhubColor.textPrimary)
+                        .font(.system(size: 34, weight: .heavy))
+                        .foregroundStyle(.white)
 
                     Text("Split cleanly. Settle calmly.")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(PayhubColor.brandPrimary)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.72))
                 }
             }
             .offset(y: -34)
@@ -87,6 +91,6 @@ struct PayhubLaunchView<Content: View>: View {
 
 #Preview {
     PayhubLaunchView {
-        GroupSplitView()
+        Text("App")
     }
 }

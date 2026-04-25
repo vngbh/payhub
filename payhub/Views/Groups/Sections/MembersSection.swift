@@ -1,103 +1,140 @@
 //
-//  MembersSection.swift
+//  MembersView.swift
 //  payhub
 //
 
 import Inject
 import SwiftUI
 
-struct MembersSection: View {
+struct MembersView: View {
     @ObserveInjection var inject
-
-    @ObservedObject var viewModel: GroupSplitViewModel
+    @EnvironmentObject var viewModel: GroupSplitViewModel
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        Section("Members") {
-            HStack(spacing: 12) {
-                TextField("Member name", text: $viewModel.memberName)
-                    .textInputAutocapitalization(.words)
-                    .font(.body.weight(.medium))
-                    .accessibilityIdentifier("members.nameField")
-
-                Button {
-                    viewModel.addMember()
-                } label: {
-                    Text("Add")
-                        .foregroundStyle(PayhubColor.textOnAccent)
+        VStack(spacing: 0) {
+            // Header
+            HStack(spacing: 14) {
+                Button { dismiss() } label: {
+                    ZStack {
+                        Circle()
+                            .fill(PayhubColor.surfacePrimary)
+                            .overlay(Circle().stroke(PayhubColor.borderSubtle, lineWidth: 1.5))
+                            .frame(width: 36, height: 36)
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(PayhubColor.textPrimary)
+                    }
                 }
-                .buttonStyle(.borderedProminent)
-                .accessibilityIdentifier("members.addButton")
-            }
-            .tint(PayhubColor.brandPrimary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(16)
-            .background(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(PayhubColor.surfacePrimary)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
-            )
-            .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
-            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-            .listRowBackground(Color.clear)
-            .listRowSeparator(.hidden)
+                .buttonStyle(.plain)
 
-            ForEach(viewModel.members) { member in
-                MemberRow(
-                    member: member,
-                    removeMember: viewModel.removeMember(_:)
-                )
-                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
+                Text("Members")
+                    .font(.system(size: 18, weight: .heavy))
+                    .foregroundStyle(PayhubColor.textPrimary)
+
+                Spacer()
             }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(PayhubColor.surfacePrimary)
+            .overlay(alignment: .bottom) {
+                Rectangle().fill(PayhubColor.borderSubtle).frame(height: 1)
+            }
+
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 12) {
+                    // Add field
+                    HStack(spacing: 10) {
+                        TextField("Enter member name", text: $viewModel.memberName)
+                            .textInputAutocapitalization(.words)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(PayhubColor.textPrimary)
+                            .tint(PayhubColor.bluePrimary)
+                            .accessibilityIdentifier("members.nameField")
+
+                        Button {
+                            viewModel.addMember()
+                        } label: {
+                            Text("Add")
+                                .font(.system(size: 13, weight: .bold))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(PayhubColor.dark, in: RoundedRectangle(cornerRadius: 12))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("members.addButton")
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 14)
+                    .background(PayhubColor.surfacePrimary)
+                    .clipShape(RoundedRectangle(cornerRadius: 18))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 18)
+                            .stroke(PayhubColor.borderSubtle, lineWidth: 1.5)
+                    )
+                    .shadow(color: PayhubColor.bluePrimary.opacity(0.08), radius: 12, x: 0, y: 8)
+
+                    // Member list
+                    ForEach(viewModel.members) { member in
+                        MemberRow(member: member, onRemove: { viewModel.removeMember(member) })
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+                .padding(.bottom, 40)
+            }
+            .background(PayhubColor.appBackground)
         }
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
         .enableInjection()
     }
 }
 
 private struct MemberRow: View {
     let member: Member
-    let removeMember: (Member) -> Void
+    let onRemove: () -> Void
 
     var body: some View {
-        HStack(spacing: 12) {
-            Text(String(member.name.prefix(1)).uppercased())
-                .font(.caption.weight(.bold))
-                .foregroundStyle(PayhubColor.textOnAccent)
-                .frame(width: 28, height: 28)
-                .background(PayhubColor.brandPrimary, in: Circle())
+        HStack(spacing: 14) {
+            ZStack {
+                Circle()
+                    .fill(LinearGradient(
+                        colors: [PayhubColor.bluePrimary, PayhubColor.blueDeep],
+                        startPoint: .topLeading, endPoint: .bottomTrailing
+                    ))
+                    .frame(width: 40, height: 40)
+                Text(String(member.name.prefix(1)).uppercased())
+                    .font(.system(size: 16, weight: .heavy))
+                    .foregroundStyle(.white)
+            }
 
             Text(member.name)
-                .font(.body.weight(.semibold))
+                .font(.system(size: 15, weight: .bold))
                 .foregroundStyle(PayhubColor.textPrimary)
 
             Spacer()
 
-            Image(systemName: "trash")
-                .foregroundStyle(PayhubColor.balanceNegative)
-                .frame(width: 32, height: 32)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    removeMember(member)
+            Button(action: onRemove) {
+                ZStack {
+                    Circle()
+                        .fill(Color(red: 1, green: 240 / 255, blue: 243 / 255))
+                        .frame(width: 32, height: 32)
+                    Image(systemName: "trash")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(PayhubColor.balanceNegative)
                 }
-                .accessibilityAddTraits(.isButton)
+            }
+            .buttonStyle(.plain)
             .accessibilityLabel("Remove \(member.name)")
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(PayhubColor.surfacePrimary)
-        )
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .background(PayhubColor.surfacePrimary)
+        .clipShape(RoundedRectangle(cornerRadius: 18))
         .overlay(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 18)
+                .stroke(PayhubColor.borderSubtle, lineWidth: 1.5)
         )
-        .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
+        .shadow(color: PayhubColor.bluePrimary.opacity(0.08), radius: 12, x: 0, y: 8)
     }
 }

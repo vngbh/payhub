@@ -1,86 +1,111 @@
 //
-//  BalancesSection.swift
+//  BalancesView.swift
 //  payhub
 //
 
 import Inject
 import SwiftUI
 
-struct BalancesSection: View {
+struct BalancesView: View {
     @ObserveInjection var inject
+    @EnvironmentObject var viewModel: GroupSplitViewModel
 
-    let balances: [MemberBalance]
-    let currencyFormatter: CurrencyFormatterService
+    private let fmt = CurrencyFormatterService()
 
     var body: some View {
-        Section("Balances") {
-            if balances.isEmpty {
-                EmptyStateRow(message: "Add members to see balances.")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .fill(PayhubColor.surfacePrimary)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
-                    )
-                    .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
-            } else {
-                ForEach(balances) { balance in
-                    BalanceRow(
-                        balance: balance,
-                        currencyFormatter: currencyFormatter
-                    )
-                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+        VStack(spacing: 0) {
+            // Header
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Balances")
+                    .font(.system(size: 22, weight: .heavy))
+                    .foregroundStyle(PayhubColor.textPrimary)
+                Text("Who paid what")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(PayhubColor.textSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(PayhubColor.surfacePrimary)
+            .overlay(alignment: .bottom) {
+                Rectangle().fill(PayhubColor.borderSubtle).frame(height: 1)
+            }
+
+            ScrollView(showsIndicators: false) {
+                if viewModel.balances.isEmpty {
+                    VStack(spacing: 10) {
+                        Image(systemName: "chart.pie")
+                            .font(.system(size: 36, weight: .light))
+                            .foregroundStyle(PayhubColor.textSecondary)
+                        Text("Add members to see balances.")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(PayhubColor.textSecondary)
+                    }
+                    .padding(.top, 60)
+                } else {
+                    VStack(spacing: 12) {
+                        ForEach(viewModel.balances) { balance in
+                            BalanceCard(balance: balance, fmt: fmt)
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 16)
+                    .padding(.bottom, 80)
                 }
             }
+            .background(PayhubColor.appBackground)
         }
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
         .enableInjection()
     }
 }
 
-private struct BalanceRow: View {
+private struct BalanceCard: View {
     let balance: MemberBalance
-    let currencyFormatter: CurrencyFormatterService
+    let fmt: CurrencyFormatterService
 
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(balance.member.name)
-                    .font(.headline.weight(.semibold))
-                    .foregroundStyle(PayhubColor.textPrimary)
+        HStack(spacing: 14) {
+            ZStack {
+                Circle()
+                    .fill(LinearGradient(
+                        colors: [PayhubColor.bluePrimary, PayhubColor.blueDeep],
+                        startPoint: .topLeading, endPoint: .bottomTrailing
+                    ))
+                    .frame(width: 46, height: 46)
+                Text(String(balance.member.name.prefix(1)).uppercased())
+                    .font(.system(size: 18, weight: .heavy))
+                    .foregroundStyle(.white)
+            }
 
-                Text("Paid \(currencyFormatter.string(from: balance.paid)) • Owes \(currencyFormatter.string(from: balance.owed))")
-                    .font(.caption)
-                    .foregroundStyle(PayhubColor.textTertiary)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(balance.member.name)
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundStyle(PayhubColor.textPrimary)
+                Text("Paid \(fmt.string(from: balance.paid)) · Owes \(fmt.string(from: balance.owed))")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(PayhubColor.textSecondary)
             }
 
             Spacer()
 
-            Text(currencyFormatter.string(from: balance.net))
+            Text((balance.net >= 0 ? "+" : "") + fmt.string(from: balance.net))
+                .font(.system(size: 16, weight: .heavy))
                 .foregroundStyle(balance.net >= 0 ? PayhubColor.balancePositive : PayhubColor.balanceNegative)
-                .font(.headline.weight(.bold))
                 .monospacedDigit()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(PayhubColor.surfacePrimary)
-        )
+        .padding(.horizontal, 18)
+        .padding(.vertical, 16)
+        .background(PayhubColor.surfacePrimary)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
         .overlay(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(PayhubColor.borderSubtle, lineWidth: 1.5)
         )
-        .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
+        .shadow(color: PayhubColor.bluePrimary.opacity(0.08), radius: 12, x: 0, y: 8)
     }
+}
+
+#Preview {
+    BalancesView()
+        .environmentObject(GroupSplitViewModel())
 }
