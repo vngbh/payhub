@@ -1,12 +1,12 @@
 //
-//  AddExpenseView.swift
+//  AddBillView.swift
 //  payhub
 //
 
 import Inject
 import SwiftUI
 
-struct AddExpenseView: View {
+struct AddBillView: View {
     @ObserveInjection var inject
     @EnvironmentObject var viewModel: GroupSplitViewModel
     @Environment(\.dismiss) var dismiss
@@ -28,7 +28,7 @@ struct AddExpenseView: View {
                 }
                 .buttonStyle(.plain)
 
-                Text("Add Expense")
+                Text("Add Bill")
                     .font(.system(size: 18, weight: .heavy))
                     .foregroundStyle(PayhubColor.textPrimary)
 
@@ -58,33 +58,33 @@ struct AddExpenseView: View {
 
             // CTA
             Button {
-                guard viewModel.canSubmitExpense else { return }
-                viewModel.submitExpense()
+                guard viewModel.canSubmitBill else { return }
+                viewModel.submitBill()
                 dismiss()
             } label: {
                 HStack(spacing: 10) {
                     Image(systemName: "plus")
                         .font(.system(size: 16, weight: .bold))
-                    Text("Create Expense")
+                    Text("Create Bill")
                         .font(.system(size: 16, weight: .heavy))
                 }
-                .foregroundStyle(viewModel.canSubmitExpense ? Color.white : PayhubColor.textSecondary)
+                .foregroundStyle(viewModel.canSubmitBill ? Color.white : PayhubColor.textSecondary)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 18)
-                        .fill(viewModel.canSubmitExpense ? PayhubColor.dark : PayhubColor.borderSubtle)
+                        .fill(viewModel.canSubmitBill ? PayhubColor.dark : PayhubColor.borderSubtle)
                 )
             }
             .buttonStyle(.plain)
-            .disabled(!viewModel.canSubmitExpense)
+            .disabled(!viewModel.canSubmitBill)
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
             .background(PayhubColor.surfacePrimary)
             .overlay(alignment: .top) {
                 Rectangle().fill(PayhubColor.borderSubtle).frame(height: 1)
             }
-            .accessibilityIdentifier("expense.addButton")
+            .accessibilityIdentifier("bill.addButton")
         }
         .enableInjection()
     }
@@ -99,13 +99,13 @@ struct AddExpenseView: View {
                 .tracking(0.5)
                 .textCase(.uppercase)
 
-            TextField("0", text: $viewModel.expenseAmount)
+            TextField("0", text: $viewModel.billAmount)
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.center)
                 .font(.system(size: 40, weight: .heavy))
                 .foregroundStyle(.white)
                 .tint(.white)
-                .accessibilityIdentifier("expense.amountField")
+                .accessibilityIdentifier("bill.amountField")
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 24)
@@ -123,18 +123,18 @@ struct AddExpenseView: View {
 
     private var titleCard: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("Expense Title")
+            Text("Bill Title")
                 .font(.system(size: 11, weight: .bold))
                 .foregroundStyle(PayhubColor.textSecondary)
                 .tracking(0.4)
                 .textCase(.uppercase)
 
-            TextField("e.g. Dinner at Nobu", text: $viewModel.expenseTitle)
+            TextField("e.g. Dinner at Nobu", text: $viewModel.billTitle)
                 .textInputAutocapitalization(.words)
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(PayhubColor.textPrimary)
                 .tint(PayhubColor.bluePrimary)
-                .accessibilityIdentifier("expense.titleField")
+                .accessibilityIdentifier("bill.titleField")
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 14)
@@ -175,7 +175,7 @@ struct AddExpenseView: View {
                             )
                     }
                     .buttonStyle(.plain)
-                    .accessibilityIdentifier("expense.payer.\(member.name)")
+                    .accessibilityIdentifier("bill.payer.\(member.name)")
                 }
             }
         }
@@ -241,7 +241,7 @@ struct AddExpenseView: View {
                         }
                     }
                     .buttonStyle(.plain)
-                    .accessibilityIdentifier("expense.participant.\(member.name)")
+                    .accessibilityIdentifier("bill.participant.\(member.name)")
                 }
             }
         }
@@ -263,7 +263,6 @@ private struct FlexRow<Content: View>: View {
     @ViewBuilder let content: Content
 
     var body: some View {
-        // Simple horizontal scroll for now; wrapping layout not needed for small member counts
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: spacing) {
                 content

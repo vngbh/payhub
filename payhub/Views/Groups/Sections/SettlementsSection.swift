@@ -31,7 +31,7 @@ struct SettlementsView: View {
                 .buttonStyle(.plain)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Settle Up")
+                    Text("Calculate")
                         .font(.system(size: 18, weight: .heavy))
                         .foregroundStyle(PayhubColor.textPrimary)
                     Text("Minimum transfers needed")

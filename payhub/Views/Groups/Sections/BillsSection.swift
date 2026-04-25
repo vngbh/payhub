@@ -1,16 +1,16 @@
 //
-//  ExpensesView.swift
+//  BillsView.swift
 //  payhub
 //
 
 import Inject
 import SwiftUI
 
-struct ExpensesView: View {
+struct BillsView: View {
     @ObserveInjection var inject
     @EnvironmentObject var viewModel: GroupSplitViewModel
 
-    let onAddExpense: () -> Void
+    let onAddBill: () -> Void
 
     private let fmt = CurrencyFormatterService()
 
@@ -18,10 +18,10 @@ struct ExpensesView: View {
         VStack(spacing: 0) {
             // Header
             VStack(alignment: .leading, spacing: 2) {
-                Text("Expenses")
+                Text("Bills")
                     .font(.system(size: 22, weight: .heavy))
                     .foregroundStyle(PayhubColor.textPrimary)
-                Text("All recorded expenses")
+                Text("All recorded bills")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(PayhubColor.textSecondary)
             }
@@ -35,24 +35,24 @@ struct ExpensesView: View {
 
             // List
             ScrollView(showsIndicators: false) {
-                if viewModel.expenses.isEmpty {
+                if viewModel.bills.isEmpty {
                     VStack(spacing: 10) {
                         Image(systemName: "doc.text")
                             .font(.system(size: 36, weight: .light))
                             .foregroundStyle(PayhubColor.textSecondary)
-                        Text("No expenses yet.")
+                        Text("No bills yet.")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundStyle(PayhubColor.textSecondary)
                     }
                     .padding(.top, 60)
                 } else {
                     VStack(spacing: 12) {
-                        ForEach(viewModel.expenses.reversed()) { expense in
-                            ExpenseCard(
-                                expense: expense,
-                                payerName: viewModel.memberName(for: expense.payerID),
+                        ForEach(viewModel.bills.reversed()) { bill in
+                            BillCard(
+                                bill: bill,
+                                payerName: viewModel.memberName(for: bill.payerID),
                                 fmt: fmt,
-                                onDelete: { viewModel.removeExpense(expense) }
+                                onDelete: { viewModel.removeBill(bill) }
                             )
                         }
                     }
@@ -64,11 +64,11 @@ struct ExpensesView: View {
             .background(PayhubColor.appBackground)
 
             // CTA
-            Button(action: onAddExpense) {
+            Button(action: onAddBill) {
                 HStack(spacing: 10) {
                     Image(systemName: "plus")
                         .font(.system(size: 16, weight: .bold))
-                    Text("Add Expense")
+                    Text("Add Bill")
                         .font(.system(size: 15, weight: .bold))
                 }
                 .foregroundStyle(.white)
@@ -88,15 +88,15 @@ struct ExpensesView: View {
     }
 }
 
-private struct ExpenseCard: View {
-    let expense: Expense
+private struct BillCard: View {
+    let bill: Bill
     let payerName: String
     let fmt: CurrencyFormatterService
     let onDelete: () -> Void
 
     var perPerson: Decimal {
-        guard !expense.participantIDs.isEmpty else { return expense.amount }
-        return expense.amount / Decimal(expense.participantIDs.count)
+        guard !bill.participantIDs.isEmpty else { return bill.amount }
+        return bill.amount / Decimal(bill.participantIDs.count)
     }
 
     var body: some View {
@@ -112,10 +112,10 @@ private struct ExpenseCard: View {
                     )
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(expense.title)
+                    Text(bill.title)
                         .font(.system(size: 15, weight: .bold))
                         .foregroundStyle(PayhubColor.textPrimary)
-                    Text("Paid by \(payerName) · \(expense.participantIDs.count) people")
+                    Text("Paid by \(payerName) · \(bill.participantIDs.count) people")
                         .font(.system(size: 12, weight: .medium))
                         .foregroundStyle(PayhubColor.textSecondary)
                     Text("\(fmt.string(from: perPerson))/person")
@@ -126,7 +126,7 @@ private struct ExpenseCard: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: 6) {
-                    Text(fmt.string(from: expense.amount))
+                    Text(fmt.string(from: bill.amount))
                         .font(.system(size: 16, weight: .heavy))
                         .foregroundStyle(PayhubColor.textPrimary)
                         .monospacedDigit()
@@ -162,6 +162,6 @@ private struct ExpenseCard: View {
 }
 
 #Preview {
-    ExpensesView(onAddExpense: {})
+    BillsView(onAddBill: {})
         .environmentObject(GroupSplitViewModel())
 }

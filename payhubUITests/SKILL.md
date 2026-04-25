@@ -30,8 +30,8 @@ Prioritize UI tests for:
 - App launches successfully.
 - Creating a group.
 - Adding members.
-- Adding an expense.
-- Viewing the settlement summary.
+- Adding a bill.
+- Viewing the calculation summary.
 - Sharing or exporting the result when that feature exists.
 
 ## UI Test Style

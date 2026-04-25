@@ -8,7 +8,7 @@ Each chapter contains:
 - members
 - bills
 - balances
-- pay back suggestions
+- calculate suggestions
 
 Because of that, the current split screen should not be the first screen of the app.
 
@@ -23,7 +23,7 @@ A chapter contains:
 - Members
 - Bills
 - Balances
-- Pay Back
+- Calculate
 
 ## Naming
 
@@ -32,12 +32,12 @@ Use friendly and easy-to-understand product language.
 Preferred terms:
 - `Chapter` for the top-level container
 - `Bills` instead of `Expenses`
-- `Pay Back` instead of `Settle Up`
+- `Calculate` instead of `Settle Up`
 
 Reasoning:
 - `Chapter` gives each outing its own identity
 - `Bills` feels more familiar in everyday use
-- `Pay Back` feels more direct and friendly
+- `Calculate` feels more direct and action-oriented
 
 ## First Screen
 
@@ -61,7 +61,7 @@ This screen contains:
 - Members
 - Bills
 - Balances
-- Pay Back
+- Calculate
 
 ## UX Notes
 
