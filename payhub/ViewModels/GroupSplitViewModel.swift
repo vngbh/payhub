@@ -8,10 +8,10 @@ import Combine
 
 final class GroupSplitViewModel: ObservableObject {
     @Published private(set) var members: [Member]
-    @Published private(set) var expenses: [Expense]
+    @Published private(set) var bills: [Bill]
     @Published var memberName = ""
-    @Published var expenseTitle = ""
-    @Published var expenseAmount = ""
+    @Published var billTitle = ""
+    @Published var billAmount = ""
     @Published var selectedPayerID: UUID?
     @Published var selectedParticipantIDs: Set<UUID> = []
 
@@ -19,33 +19,33 @@ final class GroupSplitViewModel: ObservableObject {
 
     init(
         members: [Member]? = nil,
-        expenses: [Expense] = [],
+        bills: [Bill] = [],
         calculator: SplitCalculator = SplitCalculator()
     ) {
         self.members = members ?? Self.sampleMembers
-        self.expenses = expenses
+        self.bills = bills
         self.calculator = calculator
         selectedPayerID = self.members.first?.id
         selectedParticipantIDs = Set(self.members.map(\.id))
     }
 
-    var canSubmitExpense: Bool {
-        !expenseTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            && parsedExpenseAmount != nil
+    var canSubmitBill: Bool {
+        !billTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && parsedBillAmount != nil
             && selectedPayerID != nil
             && !selectedParticipantIDs.isEmpty
     }
 
     var balances: [MemberBalance] {
-        calculator.balances(for: members, expenses: expenses)
+        calculator.balances(for: members, bills: bills)
     }
 
     var settlements: [SettlementTransaction] {
-        calculator.settlements(for: members, expenses: expenses)
+        calculator.settlements(for: members, bills: bills)
     }
 
     var totalSpent: Decimal {
-        expenses.reduce(Decimal(0)) { $0 + $1.amount }
+        bills.reduce(Decimal(0)) { $0 + $1.amount }
     }
 
     func addMember() {
@@ -67,7 +67,7 @@ final class GroupSplitViewModel: ObservableObject {
 
     func removeMember(_ member: Member) {
         members.removeAll { $0.id == member.id }
-        expenses.removeAll { $0.payerID == member.id || $0.participantIDs.contains(member.id) }
+        bills.removeAll { $0.payerID == member.id || $0.participantIDs.contains(member.id) }
         selectedParticipantIDs.remove(member.id)
 
         if selectedPayerID == member.id {
@@ -83,11 +83,11 @@ final class GroupSplitViewModel: ObservableObject {
         }
     }
 
-    func submitExpense() {
-        let trimmedTitle = expenseTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+    func submitBill() {
+        let trimmedTitle = billTitle.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard
-            let amount = parsedExpenseAmount,
+            let amount = parsedBillAmount,
             let payerID = selectedPayerID,
             !selectedParticipantIDs.isEmpty,
             !trimmedTitle.isEmpty
@@ -95,18 +95,18 @@ final class GroupSplitViewModel: ObservableObject {
             return
         }
 
-        expenses.append(Expense(
+        bills.append(Bill(
             title: trimmedTitle,
             amount: amount,
             payerID: payerID,
             participantIDs: selectedParticipantIDs
         ))
 
-        resetExpenseForm()
+        resetBillForm()
     }
 
-    func updateExpense(
-        _ expense: Expense,
+    func updateBill(
+        _ bill: Bill,
         title: String,
         amountText: String,
         payerID: UUID?,
@@ -122,27 +122,27 @@ final class GroupSplitViewModel: ObservableObject {
             !normalizedAmount.contains(","),
             let amount = Decimal(string: normalizedAmount, locale: Locale(identifier: "en_US_POSIX")),
             amount > 0,
-            let expenseIndex = expenses.firstIndex(where: { $0.id == expense.id })
+            let billIndex = bills.firstIndex(where: { $0.id == bill.id })
         else {
             return
         }
 
-        expenses[expenseIndex].title = trimmedTitle
-        expenses[expenseIndex].amount = amount
-        expenses[expenseIndex].payerID = payerID
-        expenses[expenseIndex].participantIDs = participantIDs
+        bills[billIndex].title = trimmedTitle
+        bills[billIndex].amount = amount
+        bills[billIndex].payerID = payerID
+        bills[billIndex].participantIDs = participantIDs
     }
 
-    func removeExpense(_ expense: Expense) {
-        expenses.removeAll { $0.id == expense.id }
+    func removeBill(_ bill: Bill) {
+        bills.removeAll { $0.id == bill.id }
     }
 
     func memberName(for id: UUID) -> String {
         members.first { $0.id == id }?.name ?? "Unknown"
     }
 
-    private var parsedExpenseAmount: Decimal? {
-        let normalizedAmount = expenseAmount.trimmingCharacters(in: .whitespacesAndNewlines)
+    private var parsedBillAmount: Decimal? {
+        let normalizedAmount = billAmount.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard
             !normalizedAmount.contains(","),
@@ -155,9 +155,9 @@ final class GroupSplitViewModel: ObservableObject {
         return amount
     }
 
-    private func resetExpenseForm() {
-        expenseTitle = ""
-        expenseAmount = ""
+    private func resetBillForm() {
+        billTitle = ""
+        billAmount = ""
         selectedPayerID = members.first?.id
         selectedParticipantIDs = Set(members.map(\.id))
     }

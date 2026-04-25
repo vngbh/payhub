@@ -14,14 +14,14 @@ final class SplitCalculatorTests: XCTestCase {
         let bao = Member(name: "Bao")
         let casey = Member(name: "Casey")
         let members = [alex, bao, casey]
-        let expense = Expense(
+        let bill = Bill(
             title: "Dinner",
             amount: 90,
             payerID: alex.id,
             participantIDs: Set(members.map(\.id))
         )
 
-        let balances = calculator.balances(for: members, expenses: [expense])
+        let balances = calculator.balances(for: members, bills: [bill])
 
         XCTAssertEqual(balance(for: alex, in: balances)?.paid, 90)
         XCTAssertEqual(balance(for: alex, in: balances)?.owed, 30)
@@ -35,14 +35,14 @@ final class SplitCalculatorTests: XCTestCase {
         let bao = Member(name: "Bao")
         let casey = Member(name: "Casey")
         let members = [alex, bao, casey]
-        let expense = Expense(
+        let bill = Bill(
             title: "Taxi",
             amount: 40,
             payerID: bao.id,
             participantIDs: [alex.id, bao.id]
         )
 
-        let balances = calculator.balances(for: members, expenses: [expense])
+        let balances = calculator.balances(for: members, bills: [bill])
 
         XCTAssertEqual(balance(for: alex, in: balances)?.net, -20)
         XCTAssertEqual(balance(for: bao, in: balances)?.net, 20)
@@ -54,12 +54,12 @@ final class SplitCalculatorTests: XCTestCase {
         let bao = Member(name: "Bao")
         let casey = Member(name: "Casey")
         let members = [alex, bao, casey]
-        let expenses = [
-            Expense(title: "Dinner", amount: 90, payerID: alex.id, participantIDs: Set(members.map(\.id))),
-            Expense(title: "Dessert", amount: 30, payerID: bao.id, participantIDs: Set(members.map(\.id)))
+        let bills = [
+            Bill(title: "Dinner", amount: 90, payerID: alex.id, participantIDs: Set(members.map(\.id))),
+            Bill(title: "Dessert", amount: 30, payerID: bao.id, participantIDs: Set(members.map(\.id)))
         ]
 
-        let settlements = calculator.settlements(for: members, expenses: expenses)
+        let settlements = calculator.settlements(for: members, bills: bills)
 
         XCTAssertEqual(settlements.count, 2)
         XCTAssertEqual(settlements.reduce(Decimal(0)) { $0 + $1.amount }, 50)
@@ -71,14 +71,14 @@ final class SplitCalculatorTests: XCTestCase {
         let bao = Member(name: "Bao")
         let casey = Member(name: "Casey")
         let members = [alex, bao, casey]
-        let expense = Expense(
+        let bill = Bill(
             title: "Snacks",
             amount: 10,
             payerID: alex.id,
             participantIDs: Set(members.map(\.id))
         )
 
-        let balances = calculator.balances(for: members, expenses: [expense])
+        let balances = calculator.balances(for: members, bills: [bill])
         let totalPaid = balances.reduce(Decimal(0)) { $0 + $1.paid }
         let totalOwed = balances.reduce(Decimal(0)) { $0 + $1.owed }
 
@@ -91,14 +91,14 @@ final class SplitCalculatorTests: XCTestCase {
         let bao = Member(name: "Bao")
         let casey = Member(name: "Casey")
         let members = [alex, bao, casey]
-        let expense = Expense(
+        let bill = Bill(
             title: "Snacks",
             amount: 10,
             payerID: alex.id,
             participantIDs: Set(members.map(\.id))
         )
 
-        let balances = calculator.balances(for: members, expenses: [expense])
+        let balances = calculator.balances(for: members, bills: [bill])
 
         XCTAssertTrue(balances.contains { balance in
             let integerAmount = NSDecimalNumber(decimal: balance.owed).intValue

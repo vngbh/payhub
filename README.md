@@ -1,6 +1,6 @@
 # payhub
 
-payhub is an iOS app for splitting shared expenses after meals, hangouts, trips, and other group activities. It helps record who paid, who participated, and which settlement transfers are needed.
+payhub is an iOS app for splitting shared bills after meals, hangouts, trips, and other group activities. It helps record who paid, who participated, and which settlement transfers are needed.
 
 ## Project Status
 
@@ -266,11 +266,11 @@ Bill-splitting logic should live in models or services so it can be unit tested.
 
 - Create a group.
 - Add members.
-- Add an expense with title, amount, payer, and participants.
+- Add a bill with title, amount, payer, and participants.
 - Calculate how much each person paid.
 - Calculate how much each person owes.
 - Suggest the minimum settlement transactions.
-- Edit or delete expenses.
+- Edit or delete bills.
 - Save data locally.
 - Share the settlement summary.
 
@@ -279,8 +279,8 @@ Bill-splitting logic should live in models or services so it can be unit tested.
 Prioritize unit tests for:
 
 - Even splits across all members.
-- One person paying multiple expenses.
-- Expenses involving only some members.
+- One person paying multiple bills.
+- Bills involving only some members.
 - Decimal amounts and rounding behavior.
 - Total received matching total owed.
 - No settlements when everyone is balanced.
@@ -289,8 +289,8 @@ Prioritize UI tests for:
 
 - App launch.
 - Group creation.
-- Expense creation.
-- Settlement result review.
+- Bill creation.
+- Calculation result review.
 
 ## Release Build
 

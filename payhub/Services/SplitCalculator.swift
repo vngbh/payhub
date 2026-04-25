@@ -6,13 +6,13 @@
 import Foundation
 
 struct SplitCalculator {
-    func balances(for members: [Member], expenses: [Expense]) -> [MemberBalance] {
+    func balances(for members: [Member], bills: [Bill]) -> [MemberBalance] {
         let memberIDs = Set(members.map(\.id))
         var paidAmounts = Dictionary(uniqueKeysWithValues: members.map { ($0.id, Decimal(0)) })
         var owedAmounts = Dictionary(uniqueKeysWithValues: members.map { ($0.id, Decimal(0)) })
 
-        for expense in expenses where memberIDs.contains(expense.payerID) {
-            let participants = expense.participantIDs
+        for bill in bills where memberIDs.contains(bill.payerID) {
+            let participants = bill.participantIDs
                 .filter { memberIDs.contains($0) }
                 .sorted { $0.uuidString < $1.uuidString }
 
@@ -20,14 +20,14 @@ struct SplitCalculator {
                 continue
             }
 
-            paidAmounts[expense.payerID, default: 0] += expense.amount
+            paidAmounts[bill.payerID, default: 0] += bill.amount
 
-            let share = expense.amount / Decimal(participants.count)
+            let share = bill.amount / Decimal(participants.count)
             var allocatedAmount = Decimal(0)
 
             for (index, participantID) in participants.enumerated() {
                 let owedShare = index == participants.count - 1
-                    ? expense.amount - allocatedAmount
+                    ? bill.amount - allocatedAmount
                     : share
 
                 owedAmounts[participantID, default: 0] += owedShare
@@ -48,8 +48,8 @@ struct SplitCalculator {
         }
     }
 
-    func settlements(for members: [Member], expenses: [Expense]) -> [SettlementTransaction] {
-        let balancesByMember = balances(for: members, expenses: expenses)
+    func settlements(for members: [Member], bills: [Bill]) -> [SettlementTransaction] {
+        let balancesByMember = balances(for: members, bills: bills)
         var debtors = balancesByMember
             .map { ($0.member, -$0.net) }
             .filter { $0.1 > 0 }
