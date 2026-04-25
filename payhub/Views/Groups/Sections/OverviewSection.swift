@@ -17,41 +17,44 @@ struct OverviewSection: View {
             VStack(alignment: .leading, spacing: 18) {
                 HStack {
                     Text("Group Wallet")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(PayhubColor.textOnAccent)
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.65))
+                        .tracking(0.5)
+                        .textCase(.uppercase)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 10)
-                        .background(PayhubColor.brandPrimary, in: Capsule())
+                        .background(.white.opacity(0.14), in: Capsule())
 
                     Spacer()
 
                     Text("Live Split")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(PayhubColor.textTertiary)
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.65))
                 }
 
                 HStack(alignment: .top, spacing: 14) {
                     Image("PayhubLogo")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 64, height: 64)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .shadow(color: PayhubColor.brandPrimary.opacity(0.18), radius: 10, x: 0, y: 6)
+                        .frame(width: 52, height: 52)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .shadow(color: .black.opacity(0.22), radius: 8, x: 0, y: 4)
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Shared Spending")
                             .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(PayhubColor.brandPrimary)
+                            .foregroundStyle(.white.opacity(0.65))
 
                         Text("payhub")
                             .font(.largeTitle.weight(.bold))
-                            .foregroundStyle(PayhubColor.textPrimary)
+                            .foregroundStyle(.white)
                     }
                 }
 
                 Text(currencyFormatter.string(from: totalSpent))
                     .font(.system(size: 48, weight: .bold, design: .default))
-                    .foregroundStyle(PayhubColor.textPrimary)
+                    .foregroundStyle(.white)
+                    .monospacedDigit()
                     .accessibilityIdentifier("overview.totalSpent")
 
                 HStack(spacing: 10) {
@@ -62,17 +65,13 @@ struct OverviewSection: View {
 
                 Text("Add members, record shared expenses, then settle up with the fewest transfers.")
                     .font(.subheadline.weight(.medium))
-                    .foregroundStyle(PayhubColor.textSecondary)
+                    .foregroundStyle(.white.opacity(0.65))
             }
             .padding(.vertical, 18)
             .padding(.horizontal, 4)
             .listRowBackground(
                 LinearGradient(
-                    colors: [
-                        PayhubColor.surfacePrimary,
-                        PayhubColor.brandSoft.opacity(0.74),
-                        PayhubColor.brandBright.opacity(0.24)
-                    ],
+                    colors: [PayhubColor.bluePrimary, PayhubColor.blueDeep],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
@@ -90,20 +89,16 @@ private struct SummaryPill: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(title)
-                .font(.caption2.weight(.semibold))
-                .foregroundStyle(PayhubColor.textSecondary)
+                .font(.system(size: 9, weight: .semibold))
+                .foregroundStyle(.white.opacity(0.65))
 
             Text(value)
-                .font(.caption.weight(.bold))
-                .foregroundStyle(PayhubColor.textPrimary)
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(.white)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 8)
         .padding(.horizontal, 10)
-        .background(PayhubColor.iconSurface.opacity(0.76), in: RoundedRectangle(cornerRadius: 8))
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(PayhubColor.borderSubtle.opacity(0.76), lineWidth: 1)
-        )
+        .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: 12))
     }
 }

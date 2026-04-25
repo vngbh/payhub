@@ -1,357 +1,167 @@
 //
-//  ExpensesSection.swift
+//  ExpensesView.swift
 //  payhub
 //
 
 import Inject
 import SwiftUI
 
-struct ExpensesSection: View {
+struct ExpensesView: View {
     @ObserveInjection var inject
+    @EnvironmentObject var viewModel: GroupSplitViewModel
 
-    @State private var expandedExpenseID: UUID?
+    let onAddExpense: () -> Void
 
-    let members: [Member]
-    let expenses: [Expense]
-    let currencyFormatter: CurrencyFormatterService
-    let memberName: (UUID) -> String
-    let updateExpense: (Expense, String, String, UUID?, Set<UUID>) -> Void
-    let removeExpense: (Expense) -> Void
+    private let fmt = CurrencyFormatterService()
 
     var body: some View {
-        Section("Expenses") {
-            if expenses.isEmpty {
-                EmptyStateRow(message: "No expenses yet.")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .fill(PayhubColor.surfacePrimary)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
-                    )
-                    .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
-            } else {
-                ForEach(expenses) { expense in
-                    ExpandableExpenseRow(
-                        isExpanded: expandedExpenseID == expense.id,
-                        expense: expense,
-                        members: members,
-                        currencyFormatter: currencyFormatter,
-                        payerName: memberName(expense.payerID),
-                        toggleExpanded: {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                expandedExpenseID = expandedExpenseID == expense.id ? nil : expense.id
-                            }
-                        },
-                        updateExpense: updateExpense,
-                        removeExpense: { selectedExpense in
-                            removeExpense(selectedExpense)
+        VStack(spacing: 0) {
+            // Header
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Expenses")
+                    .font(.system(size: 22, weight: .heavy))
+                    .foregroundStyle(PayhubColor.textPrimary)
+                Text("All recorded expenses")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(PayhubColor.textSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(PayhubColor.surfacePrimary)
+            .overlay(alignment: .bottom) {
+                Rectangle().fill(PayhubColor.borderSubtle).frame(height: 1)
+            }
 
-                            if expandedExpenseID == selectedExpense.id {
-                                expandedExpenseID = nil
-                            }
+            // List
+            ScrollView(showsIndicators: false) {
+                if viewModel.expenses.isEmpty {
+                    VStack(spacing: 10) {
+                        Image(systemName: "doc.text")
+                            .font(.system(size: 36, weight: .light))
+                            .foregroundStyle(PayhubColor.textSecondary)
+                        Text("No expenses yet.")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(PayhubColor.textSecondary)
+                    }
+                    .padding(.top, 60)
+                } else {
+                    VStack(spacing: 12) {
+                        ForEach(viewModel.expenses.reversed()) { expense in
+                            ExpenseCard(
+                                expense: expense,
+                                payerName: viewModel.memberName(for: expense.payerID),
+                                fmt: fmt,
+                                onDelete: { viewModel.removeExpense(expense) }
+                            )
                         }
-                    )
-                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 16)
+                    .padding(.bottom, 40)
                 }
             }
+            .background(PayhubColor.appBackground)
+
+            // CTA
+            Button(action: onAddExpense) {
+                HStack(spacing: 10) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 16, weight: .bold))
+                    Text("Add Expense")
+                        .font(.system(size: 15, weight: .bold))
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 15)
+                .background(PayhubColor.dark, in: RoundedRectangle(cornerRadius: 18))
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(PayhubColor.surfacePrimary)
+            .overlay(alignment: .top) {
+                Rectangle().fill(PayhubColor.borderSubtle).frame(height: 1)
+            }
         }
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
         .enableInjection()
     }
 }
 
-private struct ExpandableExpenseRow: View {
-    @State private var draftTitle: String
-    @State private var draftAmount: String
-    @State private var draftPayerID: UUID?
-    @State private var draftParticipantIDs: Set<UUID>
-    @State private var pendingAction: PendingAction?
-
-    let isExpanded: Bool
+private struct ExpenseCard: View {
     let expense: Expense
-    let members: [Member]
-    let currencyFormatter: CurrencyFormatterService
     let payerName: String
-    let toggleExpanded: () -> Void
-    let updateExpense: (Expense, String, String, UUID?, Set<UUID>) -> Void
-    let removeExpense: (Expense) -> Void
+    let fmt: CurrencyFormatterService
+    let onDelete: () -> Void
 
-    init(
-        isExpanded: Bool,
-        expense: Expense,
-        members: [Member],
-        currencyFormatter: CurrencyFormatterService,
-        payerName: String,
-        toggleExpanded: @escaping () -> Void,
-        updateExpense: @escaping (Expense, String, String, UUID?, Set<UUID>) -> Void,
-        removeExpense: @escaping (Expense) -> Void
-    ) {
-        self.isExpanded = isExpanded
-        self.expense = expense
-        self.members = members
-        self.currencyFormatter = currencyFormatter
-        self.payerName = payerName
-        self.toggleExpanded = toggleExpanded
-        self.updateExpense = updateExpense
-        self.removeExpense = removeExpense
-        _draftTitle = State(initialValue: expense.title)
-        _draftAmount = State(initialValue: NSDecimalNumber(decimal: expense.amount).stringValue)
-        _draftPayerID = State(initialValue: expense.payerID)
-        _draftParticipantIDs = State(initialValue: expense.participantIDs)
+    var perPerson: Decimal {
+        guard !expense.participantIDs.isEmpty else { return expense.amount }
+        return expense.amount / Decimal(expense.participantIDs.count)
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
+        VStack(spacing: 0) {
+            HStack(alignment: .top, spacing: 12) {
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(PayhubColor.bluePrimary.opacity(0.1))
+                    .frame(width: 46, height: 46)
+                    .overlay(
+                        Image(systemName: "creditcard")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundStyle(PayhubColor.bluePrimary)
+                    )
+
+                VStack(alignment: .leading, spacing: 2) {
                     Text(expense.title)
-                        .font(.headline.weight(.semibold))
+                        .font(.system(size: 15, weight: .bold))
                         .foregroundStyle(PayhubColor.textPrimary)
+                    Text("Paid by \(payerName) · \(expense.participantIDs.count) people")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(PayhubColor.textSecondary)
+                    Text("\(fmt.string(from: perPerson))/person")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(PayhubColor.bluePrimary)
+                }
 
-                    Spacer()
+                Spacer()
 
-                    Text(currencyFormatter.string(from: expense.amount))
-                        .font(.headline.weight(.bold))
+                VStack(alignment: .trailing, spacing: 6) {
+                    Text(fmt.string(from: expense.amount))
+                        .font(.system(size: 16, weight: .heavy))
+                        .foregroundStyle(PayhubColor.textPrimary)
                         .monospacedDigit()
-                        .foregroundStyle(PayhubColor.textPrimary)
+
+                    Button(action: onDelete) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "trash")
+                                .font(.system(size: 11, weight: .bold))
+                            Text("Delete")
+                                .font(.system(size: 11, weight: .bold))
+                        }
+                        .foregroundStyle(PayhubColor.balanceNegative)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color(red: 1, green: 240 / 255, blue: 243 / 255))
+                        )
+                    }
+                    .buttonStyle(.plain)
                 }
-
-                Text("Paid by \(payerName)")
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(PayhubColor.textTertiary)
-            }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                toggleExpanded()
-            }
-
-            if isExpanded {
-                Divider()
-                    .overlay(PayhubColor.borderSubtle)
-
-                expandedContent
-                    .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(PayhubColor.surfacePrimary)
-        )
+        .background(PayhubColor.surfacePrimary)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
         .overlay(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(PayhubColor.borderSubtle.opacity(0.9), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(PayhubColor.borderSubtle, lineWidth: 1.5)
         )
-        .shadow(color: PayhubColor.textPrimary.opacity(0.04), radius: 12, x: 0, y: 6)
-        .onChange(of: expense) { updatedExpense in
-            if !hasChanges {
-                syncDraft(with: updatedExpense)
-            }
-        }
-        .confirmationDialog(
-            pendingAction?.title ?? "",
-            isPresented: Binding(
-                get: { pendingAction != nil },
-                set: { isPresented in
-                    if !isPresented {
-                        pendingAction = nil
-                    }
-                }
-            ),
-            titleVisibility: .visible
-        ) {
-            switch pendingAction {
-            case .edit:
-                Button("Confirm Edit") {
-                    updateExpense(expense, draftTitle, draftAmount, draftPayerID, draftParticipantIDs)
-                    syncDraft(with: Expense(
-                        id: expense.id,
-                        title: draftTitle.trimmingCharacters(in: .whitespacesAndNewlines),
-                        amount: parsedAmount ?? expense.amount,
-                        payerID: draftPayerID ?? expense.payerID,
-                        participantIDs: draftParticipantIDs
-                    ))
-                    pendingAction = nil
-                }
-            case .delete:
-                Button("Confirm Delete", role: .destructive) {
-                    removeExpense(expense)
-                    pendingAction = nil
-                }
-            case .none:
-                EmptyView()
-            }
-
-            Button("Cancel", role: .cancel) {
-                pendingAction = nil
-            }
-        } message: {
-            Text(pendingAction?.message(expenseTitle: expense.title) ?? "")
-        }
-    }
-
-    private var expandedContent: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            TextField("Expense title", text: $draftTitle)
-                .textInputAutocapitalization(.words)
-                .font(.body.weight(.medium))
-
-            TextField("Amount", text: $draftAmount)
-                .font(.body.weight(.medium))
-                .keyboardType(.decimalPad)
-
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Paid by")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(PayhubColor.textPrimary)
-
-                ForEach(members) { member in
-                    Button {
-                        draftPayerID = member.id
-                    } label: {
-                        HStack(spacing: 10) {
-                            Image(systemName: draftPayerID == member.id ? "largecircle.fill.circle" : "circle")
-                                .foregroundStyle(
-                                    draftPayerID == member.id
-                                        ? PayhubColor.brandPrimary
-                                        : PayhubColor.textTertiary
-                                )
-
-                            Text(member.name)
-                                .font(.body.weight(.semibold))
-                                .foregroundStyle(PayhubColor.textPrimary)
-                        }
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Participants")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(PayhubColor.textPrimary)
-
-                ForEach(members) { member in
-                    Button {
-                        toggleParticipant(member.id)
-                    } label: {
-                        HStack(spacing: 10) {
-                            Image(systemName: draftParticipantIDs.contains(member.id) ? "checkmark.circle.fill" : "circle")
-                                .foregroundStyle(
-                                    draftParticipantIDs.contains(member.id)
-                                        ? PayhubColor.brandPrimary
-                                        : PayhubColor.textTertiary
-                                )
-
-                            Text(member.name)
-                                .font(.body.weight(.semibold))
-                                .foregroundStyle(PayhubColor.textPrimary)
-                        }
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-
-            HStack(spacing: 10) {
-                Button("Delete") {
-                    pendingAction = .delete
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(PayhubColor.balanceNegative)
-
-                Button("Edit") {
-                    pendingAction = .edit
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(PayhubColor.brandPrimary)
-                .disabled(!canConfirmEdit)
-            }
-            .padding(.top, 4)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(14)
-        .background(PayhubColor.surfaceSecondary, in: RoundedRectangle(cornerRadius: 14))
-    }
-
-    private var hasChanges: Bool {
-        draftExpense != expense
-    }
-
-    private var canConfirmEdit: Bool {
-        hasChanges && parsedAmount != nil && draftPayerID != nil && !draftParticipantIDs.isEmpty
-            && !draftTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-
-    private var parsedAmount: Decimal? {
-        let normalizedAmount = draftAmount.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        guard
-            !normalizedAmount.contains(","),
-            let amount = Decimal(string: normalizedAmount, locale: Locale(identifier: "en_US_POSIX")),
-            amount > 0
-        else {
-            return nil
-        }
-
-        return amount
-    }
-
-    private var draftExpense: Expense {
-        Expense(
-            id: expense.id,
-            title: draftTitle.trimmingCharacters(in: .whitespacesAndNewlines),
-            amount: parsedAmount ?? expense.amount,
-            payerID: draftPayerID ?? expense.payerID,
-            participantIDs: draftParticipantIDs
-        )
-    }
-
-    private func toggleParticipant(_ memberID: UUID) {
-        if draftParticipantIDs.contains(memberID) {
-            draftParticipantIDs.remove(memberID)
-        } else {
-            draftParticipantIDs.insert(memberID)
-        }
-    }
-
-    private func syncDraft(with expense: Expense) {
-        draftTitle = expense.title
-        draftAmount = NSDecimalNumber(decimal: expense.amount).stringValue
-        draftPayerID = expense.payerID
-        draftParticipantIDs = expense.participantIDs
+        .shadow(color: PayhubColor.bluePrimary.opacity(0.08), radius: 12, x: 0, y: 8)
     }
 }
 
-private enum PendingAction {
-    case edit
-    case delete
-
-    var title: String {
-        switch self {
-        case .edit:
-            return "Confirm expense update"
-        case .delete:
-            return "Confirm expense deletion"
-        }
-    }
-
-    func message(expenseTitle: String) -> String {
-        switch self {
-        case .edit:
-            return "Apply the changes you made to \(expenseTitle)?"
-        case .delete:
-            return "Delete \(expenseTitle)? This action cannot be undone."
-        }
-    }
+#Preview {
+    ExpensesView(onAddExpense: {})
+        .environmentObject(GroupSplitViewModel())
 }
